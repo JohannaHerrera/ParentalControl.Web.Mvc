@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="52b44af8c5da4e61b4a137d890775413" Name="Diagram1">
+        <EntityTypeShape EntityType="ParentalControlDBModel.Activity" Width="1.5" PointX="5.25" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.App" Width="1.5" PointX="5.25" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.DevicePC" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.DevicePhone" Width="1.5" PointX="8.25" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.DevicePhoneUse" Width="1.5" PointX="10.5" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.DeviceUse" Width="1.5" PointX="5.25" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.InfantAccount" Width="1.5" PointX="3" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.News" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.Parent" Width="1.5" PointX="0.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.Request" Width="1.5" PointX="8.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.RequestType" Width="1.5" PointX="6" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.Schedule" Width="1.5" PointX="3" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.WebCategory" Width="1.5" PointX="6" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.WebConfiguration" Width="1.5" PointX="8.25" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ParentalControlDBModel.WindowsAccount" Width="1.5" PointX="8.25" PointY="14.5" IsExpanded="true" />
+        <AssociationConnector Association="ParentalControlDBModel.Activity_InfantAccount_fk01" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.App_DevicePC_fk01" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.App_DevicePhone_fk02" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.App_InfantAccount_fk03" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.App_Schedule_fk04" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.fk_DevicePC_Parent" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.fk_WindowsAccount_DevicePC" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.DevicePhone_DevicePhoneUseFk" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.InfantAccount_DevicePhoneFk" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.Parent_DevicePhoneFk" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.Schedule_DevicePhoneUseFk" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.fk_DeviceUse_InfantAccount" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.fk_DeviceUse_Schedule" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.fk_InfantAccount_Parent" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.fk_WindowsAccount_InfantAccount" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.InfantAccount_WebConfigurationFk" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.Request_InfantAccount_fk02" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.fk_Parent_Schedule" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.Request_Parent_fk03" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.Request_RequestType_fk01" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.WebCategory_WebConfigurationFk" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

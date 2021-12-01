@@ -1,0 +1,155 @@
+﻿body {
+    
+}
+
+.container {
+    display: grid;
+    justify-content: center;
+    align-content: center;   
+}
+
+#form {
+    padding-left: 100px;
+    padding-right: 80px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    float: left;
+    display: inline-block;
+}
+
+#image {
+    padding-right: 80px;
+    padding-top: 150px;
+    float: left;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+#TitleBlue {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: Highlight !important;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+#TitleGreen {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #13B57E !important;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+#loginForm {
+    font-family: Arial;
+    font-size: small;
+    padding-top: 10px;
+}
+
+.form-control {
+    width: 290px !important;
+    height: 25px !important;
+    display: flex;
+    justify-content: center;
+}
+
+.button-div {
+    padding-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    background-color: #13B57E;
+    border-radius: 10px;
+    border: none;
+    width: 135px !important;
+    height: 35px !important;
+    color: white;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: medium;
+}
+
+#registerText {
+    font-family: Arial;
+    padding-top: 20px !important;
+    font-size: 14px;
+}
+
+    #registerText > a {
+        font-weight: bold;
+        color: Highlight !important;
+        font-size: 15px;
+    }
+
+.container-menu {
+    display: flex;
+}
+
+#logoImgMenu {
+    padding-top: 16px;
+    padding-bottom: 5px;
+}
+
+#tableCol {
+    padding-right: 15px;
+    padding-left: 240px;
+    padding-top: 20px;
+}
+
+#menu {
+    float: left;
+    display: flex;
+    justify-content: center;
+}
+
+.vertical-menu {
+    width: 200px;
+    height: 640px !important;
+    background-color: Highlight;
+    justify-content: center !important;
+    align-content: center !important;
+}
+
+    .vertical-menu a {
+        color: white; /* Black text color */
+        display: block; /* Make the links appear below each other */
+        text-decoration: none; /* Remove underline from links */
+        text-align: center;
+        font-family: Arial;
+        font-weight: bold;
+    }
+
+        .vertical-menu a.active {
+            background-color: Highlight; /* Add a green color to the "active/current" link */
+            color: white;
+        }
+
+    .vertical-menu a img {
+        padding-top: 15px;
+    }
+
+#id-Parent {
+    display: flex;
+}
+
+.button-menu-Parent {
+    float: right;
+    display: flex;
+    justify-content: center;
+    padding-right: 20px;
+}
+
+.button-parent {
+    background-color: Highlight;
+    border-radius: 10px;
+    border: none;
+    width: 135px !important;
+    height: 35px !important;
+    color: white;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 15px;
+}
