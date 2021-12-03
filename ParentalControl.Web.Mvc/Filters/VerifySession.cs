@@ -1,4 +1,5 @@
 ﻿using ParentalControl.Web.Mvc.Controllers;
+using ParentalControl.Web.Mvc.Data;
 using ParentalControl.Web.Mvc.Models;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,14 @@ namespace ParentalControl.Web.Mvc.Filters
 {
     public class VerifySession : ActionFilterAttribute
     {
-        private ParentModel user;
+        private Parent user;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             try
             {
                 base.OnActionExecuting(filterContext);
-                user = (ParentModel)HttpContext.Current.Session["User"];
+                user = (Parent)HttpContext.Current.Session["User"];
 
                 if (user == null)
                 {
@@ -27,7 +28,7 @@ namespace ParentalControl.Web.Mvc.Filters
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 filterContext.Result = new RedirectResult("~/Account/Login");
             }

@@ -1,4 +1,4 @@
-﻿@model ParentalControl.Web.Mvc.Data.Parent
+﻿@model ParentalControl.Web.Mvc.Models.ParentModel
 @{
     ViewBag.Title = "Register";
 }
@@ -17,29 +17,31 @@
             <div id="image" class="col">
                 <img src="~/Content/Images/control-parental.png">
             </div>
-            <div id="form" class="col">
+            <div id="form2" class="col">
                 <h1 id="TitleGreen">Control Parental</h1>
                 <h2 id="TitleBlue">Bienvenido</h2>
                 <section id="loginForm">
-                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
-                        <h3>Nombre:</h3>
                         <div class="form-group">
+                            <h3>Nombre:</h3>
                             <div class="col-md-10">
                                 @Html.TextBoxFor(m => m.ParentUsername, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ParentUsername, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <h3>Correo:</h3>
-                        @Html.ValidationSummary("", new { @class = "text-danger" })
                         <div class="form-group">
+                            <h3>Correo:</h3>
                             <div class="col-md-10">
                                 @Html.TextBoxFor(m => m.ParentEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ParentEmail, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <h3>Contraseña:</h3>
                         <div class="form-group">
+                            <h3>Contraseña:</h3>
                             <div class="col-md-10">
                                 @Html.PasswordFor(m => m.ParentPassword, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ParentPassword, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">

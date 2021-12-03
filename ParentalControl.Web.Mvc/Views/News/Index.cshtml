@@ -31,27 +31,27 @@
             <div id="tableCol" class="col">
                 <div id="menu-Parent">
                     <div class="button-menu-Parent">
-                        <input type="submit" value="Cerrar Sesión" class="button-parent" />
+                        <input type="button" value="Cerrar Sesión" class="button-parent" />
                     </div>
                     <div class="button-menu-Parent">
-                        <input type="submit" value="Mi Cuenta" class="button-parent" />
+                        <input type="button" value="Mi Cuenta" class="button-parent" />                        
                     </div>
                 </div>
-                <div id="table-News">
-                    <h2>Tips y Noticias</h2>
+                <div>
+                    <h2 id="sectionTitle">Tips y Noticias</h2>
                     <hr />
-                    <table class="table">
+                    <table id="table-News" class="table">
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
+                            <tr id="row-News">
+                                <td id="newsTitle">
                                     @Html.DisplayFor(modelItem => item.NewsTitle)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NewsDescription)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.NewsLink)
+                                    <a href="@Html.DisplayFor(modelItem => item.NewsLink)" target="_blank">@Html.DisplayFor(modelItem => item.NewsLink)</a>                                   
                                 </td>
                             </tr>
                         }

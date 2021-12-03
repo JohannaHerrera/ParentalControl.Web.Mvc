@@ -17,6 +17,15 @@
     display: inline-block;
 }
 
+#form2 {
+    padding-left: 100px;
+    padding-right: 80px;
+    padding-top: 40px;
+    padding-bottom: 60px;
+    float: left;
+    display: inline-block;
+}
+
 #image {
     padding-right: 80px;
     padding-top: 150px;
@@ -89,8 +98,8 @@
 }
 
 #logoImgMenu {
-    padding-top: 16px;
-    padding-bottom: 5px;
+    padding-top: 15px;
+    padding-bottom: 10px;
 }
 
 #tableCol {
@@ -107,7 +116,7 @@
 
 .vertical-menu {
     width: 200px;
-    height: 640px !important;
+    height: 615px !important;
     background-color: Highlight;
     justify-content: center !important;
     align-content: center !important;
@@ -120,6 +129,7 @@
         text-align: center;
         font-family: Arial;
         font-weight: bold;
+        font-size: 14px;
     }
 
         .vertical-menu a.active {
@@ -128,7 +138,7 @@
         }
 
     .vertical-menu a img {
-        padding-top: 15px;
+        padding-top: 10px;
     }
 
 #id-Parent {
@@ -152,4 +162,45 @@
     font-family: Arial;
     font-weight: bold;
     font-size: 15px;
+}
+
+.text-danger {
+    color: red !important;
+    font-family: Arial;
+    font-weight: bold;
+}
+
+#sectionTitle {
+    font-family: Arial;
+    padding-top: 15px;
+    color: #3B3B3B;
+    font-size: 28px;
+}
+
+#table-News {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-left: 35px;
+    margin-right: 35px;
+    margin-top: 25px;
+    font-family: Arial !important;
+    font-size: 13px;
+}
+
+#newsTitle {
+    text-align: center !important;
+    font-family: Arial !important;
+    color: Highlight;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#row-News td {
+    border: solid 1px #6A82B2;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
 }

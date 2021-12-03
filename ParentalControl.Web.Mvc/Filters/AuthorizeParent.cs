@@ -11,7 +11,7 @@ namespace ParentalControl.Web.Mvc.Filters
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class AuthorizeParent : AuthorizeAttribute
     {
-        private ParentModel parentUser;
+        private Parent parentUser;
         private ParentalControlDBEntities db = new ParentalControlDBEntities();
 
         public AuthorizeParent()
@@ -23,7 +23,7 @@ namespace ParentalControl.Web.Mvc.Filters
         {
             try
             {
-                parentUser = (ParentModel)HttpContext.Current.Session["User"];
+                parentUser = (Parent)HttpContext.Current.Session["User"];
 
                 if(parentUser == null)
                 {

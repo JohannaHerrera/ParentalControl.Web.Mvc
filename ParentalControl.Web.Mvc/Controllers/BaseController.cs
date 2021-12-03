@@ -1,5 +1,5 @@
 ﻿using ParentalControl.Web.Mvc.Business.AppConstants;
-using ParentalControl.Web.Mvc.Models;
+using ParentalControl.Web.Mvc.Data;
 using ParentalControl.Web.Mvc.UI.Entities;
 using System;
 using System.Collections.Generic;
@@ -27,11 +27,11 @@ namespace ParentalControl.Web.Mvc.Controllers
         /// SetCurrentUserInfo
         /// </summary>
         /// <param name="studentInfo"></param>
-        public void SetCurrentUserInfo(ParentModel parentInfo)
+        public void SetCurrentUserInfo(Parent parentInfo)
         {
             UserSessionInfo userSessionInfo = new UserSessionInfo();
             userSessionInfo.Id = parentInfo.ParentId;
-            userSessionInfo.UserName = parentInfo.ParentEmail;
+            userSessionInfo.UserName = parentInfo.ParentUsername;
             userSessionInfo.Email = parentInfo.ParentEmail;
             Session[AppConstants.CurrentUser] = userSessionInfo;
         }
