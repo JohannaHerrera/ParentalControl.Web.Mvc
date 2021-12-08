@@ -1,0 +1,55 @@
+﻿@model ParentalControl.Web.Mvc.Models.ParentModel
+
+@{
+    ViewBag.Title = "MyProfile";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKN - Control Parental</title>
+    @Styles.Render("~/Content/ParentalControlStyle.css")
+</head>
+<body>
+    <div class="containerDashboard">
+        <div class="row">
+            <div id="menu" class="col">
+                <div class="vertical-menu">
+                    <a href='@Url.Action("Index", "News")' id="logoImgMenu"><img src="~/Content/Images/icono-menu.png"></a>
+                    <a href="#"><img src="~/Content/Images/children.png"></a>
+                    <a href="#">Cuentas Infantiles</a>
+                    <a href="#"><img src="~/Content/Images/devices.png"></a>
+                    <a href="#">Dispositivos</a>
+                    <a href="#"><img src="~/Content/Images/calendario.png"></a>
+                    <a href="#">Horarios</a>
+                    <a href="#"><img src="~/Content/Images/notificaciones.png"></a>
+                    <a href="#">Notificaciones</a>
+                </div>
+            </div>
+            <div id="tableCol" class="col">
+                <div id="menu-Parent">
+                    <div class="button-menu-Parent">
+                        @Html.ActionLink("Cerrar Sesión", "Login", "Account", new { area = "" }, new { @class = "button-parent" })
+                    </div>
+                    <div class="button-menu-Parent">
+                        @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
+                    </div>
+                </div>
+                <div>
+                    <h2 id="sectionTitle">Mi Perfil</h2>
+                    <hr />
+                    <table id="table-News" class="table">                       
+                        <tr id="row-News">
+                            <td id="newsTitle">
+                                @Model.ParentUsername
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

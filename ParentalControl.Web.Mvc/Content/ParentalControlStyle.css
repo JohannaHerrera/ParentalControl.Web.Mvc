@@ -1,5 +1,6 @@
 ﻿body {
-    
+    height: 100vh;
+    width: 1130px;
 }
 
 .container {
@@ -116,9 +117,9 @@
 
 .vertical-menu {
     width: 200px;
-    height: 615px !important;
+    height: 100vh !important;
     background-color: Highlight;
-    justify-content: center !important;
+    justify-content: left !important;
     align-content: center !important;
 }
 
@@ -147,7 +148,7 @@
 
 .button-menu-Parent {
     float: right;
-    display: flex;
+    display: inline;
     justify-content: center;
     padding-right: 20px;
 }
@@ -157,11 +158,17 @@
     border-radius: 10px;
     border: none;
     width: 135px !important;
-    height: 35px !important;
+    height: 25px !important;
     color: white;
     font-family: Arial;
     font-weight: bold;
     font-size: 15px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-decoration: none;
 }
 
 .text-danger {
@@ -175,18 +182,15 @@
     padding-top: 15px;
     color: #3B3B3B;
     font-size: 28px;
+    font-weight: bold;
 }
 
 #table-News {
-    padding-left: 12px;
-    padding-right: 12px;
     padding-top: 16px;
     padding-bottom: 16px;
-    margin-left: 35px;
-    margin-right: 35px;
     margin-top: 25px;
     font-family: Arial !important;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 #newsTitle {
@@ -203,4 +207,94 @@
     padding-bottom: 10px;
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.containerDashboard {
+    display: grid;
+    justify-content: left;
+    align-content: center;
+    width: 100% !important;
+}
+
+.rowMenu {
+    display: -webkit-box;
+}
+
+#menu-Parent {
+    padding-top: 40px;
+    margin-right: 40px;
+}
+
+.info-Content{
+    margin-left: 40px;
+}
+
+.info-Section{
+    
+}
+
+#sectionTable {
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 40px;
+}
+
+
+
+
+
+
+
+@media (max-width: 600px) {
+    #image {
+        padding-left: 100px;
+        padding-top: 20px;
+        padding-bottom: 0px;
+    }
+
+        #image img {
+            width: 50%;
+            height: auto;
+        }
+
+    #form {
+        padding-top: 10px;
+    }
+
+    #form2 {
+        padding-top: 10px;
+    }
+
+    .rowMenu {
+        width: 100px !important;
+    }
+
+    body {
+        width: 100px !important;
+    }
+
+    #logoImgMenu img {
+        width: 75% !important;
+        height: auto !important;
+        padding-left: 0px;
+    }
+
+    .info-Section{
+        padding-top: 50px;
+    }
+
+    .vertical-menu {
+        width: 100px;
+        height: auto !important;
+    }
+
+    .vertical-menu a {
+        font-size: 0;
+    }
+
+        .vertical-menu a img {
+            width: 50%;
+            height: auto;
+            padding-top: 25px;
+        }    
 }

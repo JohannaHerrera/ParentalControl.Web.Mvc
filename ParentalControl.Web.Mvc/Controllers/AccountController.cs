@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ParentalControl.Web.Mvc.Data;
+using ParentalControl.Web.Mvc.Filters;
 using ParentalControl.Web.Mvc.Models;
 
 namespace ParentalControl.Web.Mvc.Controllers
@@ -18,6 +19,7 @@ namespace ParentalControl.Web.Mvc.Controllers
     {       
         public ActionResult Login()
         {
+            Session["User"] = null;
             return View();
         }
 
@@ -71,6 +73,7 @@ namespace ParentalControl.Web.Mvc.Controllers
 
         public ActionResult Register()
         {
+            Session["User"] = null;
             return View();
         }
 
@@ -119,6 +122,23 @@ namespace ParentalControl.Web.Mvc.Controllers
             {
                 return View();
             }
+        }
+
+        [AuthorizeParent]
+        public ActionResult MyProfile()
+        {
+            try
+            {
+                var parent = this.GetCurrentUserInfo();
+                ParentModel parentModel = new ParentModel();
+                parentModel.ParentUsername = parent.UserName;
+                return View(parentModel);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View();
         }
     }
 }
