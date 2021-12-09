@@ -106,6 +106,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                             parentRegister.ParentCreationDate = DateTime.Now;
                             db.Parent.Add(parentRegister);
                             db.SaveChanges();
+                            
                         }
                         else
                         {

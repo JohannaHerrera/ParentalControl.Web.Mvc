@@ -327,6 +327,7 @@
     <Content Include="Views\Device\Index.cshtml" />
     <Content Include="Views\Device\DevicePcDetails.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Schedule\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
