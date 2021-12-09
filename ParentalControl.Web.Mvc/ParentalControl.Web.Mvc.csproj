@@ -244,6 +244,7 @@
     <Compile Include="Models\DevicePhoneModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
+    <Compile Include="Models\WindowsAccountModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Entities\UserSessionInfo.cs" />
@@ -253,6 +254,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\android.png" />
     <Content Include="Content\Images\calendario.png" />
     <Content Include="Content\Images\children.png" />
     <Content Include="Content\Images\control-parental.png" />
@@ -323,6 +325,7 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Device\Index.cshtml" />
+    <Content Include="Views\Device\DevicePcDetails.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
