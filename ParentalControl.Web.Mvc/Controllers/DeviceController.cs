@@ -235,6 +235,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                                     {
                                         var apps = (from app in db.App
                                                     where app.InfantAccountId == windowsAccount.InfantAccountId
+                                                    && app.DevicePCId == windowsAccount.DevicePCId
                                                     select app).ToList();
 
                                         db.App.RemoveRange(apps);
@@ -300,6 +301,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                                         {
                                             var apps = (from app in db.App
                                                         where app.InfantAccountId == windowsAccount.InfantAccountId
+                                                        && app.DevicePCId == windowsAccount.DevicePCId
                                                         select app).ToList();
 
                                             db.App.RemoveRange(apps);
@@ -398,6 +400,27 @@ namespace ParentalControl.Web.Mvc.Controllers
                                                   InfantName = infantAccount.InfantName
                                               }).ToList();
 
+                        List<ScheduleOptionModel> scheduleOptionModelList = new List<ScheduleOptionModel>();
+
+                        var scheduleModelList = (from schedule in db.Schedule
+                                                 where schedule.ParentId == parent.Id
+                                                 select new ScheduleOptionModel
+                                                 {
+                                                     ScheduleId = schedule.ScheduleId,
+                                                     ScheduleStartTime = schedule.ScheduleStartTime,
+                                                     ScheduleEndTime = schedule.ScheduleEndTime                                             
+                                                 }).ToList();
+
+                        var deviceUseModelList = (from deviceUse in db.DevicePhoneUse
+                                                  where deviceUse.DevicePhoneId == devicePhoneModel.DevicePhoneId
+                                                  select deviceUse).ToList();
+
+
+                        foreach(var schedule in scheduleModelList)
+                        {
+                            schedule.ScheduleTime = $"{schedule.ScheduleStartTime.ToString("HH:mm")} - {schedule.ScheduleEndTime.ToString("HH:mm")}";
+                        }
+
                         InfantAccountModel noProtected = new InfantAccountModel();
                         noProtected.InfantAccountId = 0;
                         noProtected.InfantName = appConstants.NoProtected;
@@ -407,6 +430,18 @@ namespace ParentalControl.Web.Mvc.Controllers
 
                         var infantAccountList = new SelectList(infantAccountModelList, "InfantAccountId", "InfantName");
                         ViewData["infantAccounts"] = infantAccountList;
+
+                        ScheduleOptionModel scheduleOp = new ScheduleOptionModel();
+                        scheduleOp.ScheduleId = 0;
+                        scheduleOp.ScheduleTime = "Ninguno";
+
+                        scheduleOptionModelList.Add(scheduleOp);
+                        scheduleOptionModelList.AddRange(scheduleModelList);
+
+                        var scheduleList = new SelectList(scheduleOptionModelList, "ScheduleId", "ScheduleTime");
+                        ViewData["scheduleList"] = scheduleList;
+
+                        devicePhoneModel.deviceUseList = deviceUseModelList;
                     }
                     else
                     {
@@ -416,6 +451,134 @@ namespace ParentalControl.Web.Mvc.Controllers
                 }
 
                 return View(devicePhoneModel);
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+        [AuthorizeParent]
+        [HttpPost]
+        public ActionResult DevicePhoneDetails(DevicePhoneModel devicePhoneModel, string infantAccountSelected, string schedules)
+        {
+            try
+            { 
+                var parent = this.GetCurrentUserInfo();
+                int infantId = Convert.ToInt32(infantAccountSelected);
+                char delimitador = ',';
+                List<string> scheduleIdList = schedules.Split(delimitador).ToList();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    // Obtengo el dispositivo a actualizar
+                    var devicePhone = (from device in db.DevicePhone
+                                       where device.DevicePhoneId == devicePhoneModel.DevicePhoneId
+                                       && device.ParentId == parent.Id
+                                       select device).FirstOrDefault();
+
+                    if(devicePhone != null)
+                    {
+                        // Verifico si se cambió el nombre del dispositivo
+                        if(devicePhoneModel.DevicePhoneName != null)
+                        {
+                            devicePhone.DevicePhoneName = devicePhoneModel.DevicePhoneName;
+                            db.SaveChanges();
+                        }
+
+                        // Verifico si se cambió la cuenta infantil vinculada
+                        if(devicePhone.InfantAccountId != infantId)
+                        {
+                            // Valido que no haya estado como No Protegido
+                            if (!(devicePhone.InfantAccountId == null && infantId == 0))
+                            {
+                                // Valido si se cambió a No Protegido
+                                if (infantId == 0)
+                                {
+                                    // Cambio a NULL (No Protegido)
+                                    devicePhone.InfantAccountId = null;
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    // Actualizo la nueva cuenta infantil vinculada
+                                    devicePhone.InfantAccountId = infantId;
+                                    db.SaveChanges();
+
+                                    // Registro las aplicaciones con la nueva cuenta infantil
+                                    List<App> appList = new List<App>();
+                                    AppConstants appConstants = new AppConstants();
+
+                                    var appsDevice = (from app in db.AppDevice
+                                                      where app.DevicePhoneId == devicePhoneModel.DevicePhoneId
+                                                      select app).ToList();
+
+                                    foreach (var app in appsDevice)
+                                    {
+                                        App appModel = new App();
+                                        appModel.InfantAccountId = infantId;
+                                        appModel.DevicePhoneId = devicePhoneModel.DevicePhoneId;
+                                        appModel.AppName = app.AppDeviceName;
+                                        appModel.AppStatus = appConstants.Access;
+                                        appModel.AppAccessPermission = appConstants.Access;
+                                        appModel.AppCreationDate = DateTime.Now;
+                                        appList.Add(appModel);
+                                    }
+
+                                    db.App.AddRange(appList);
+                                    db.SaveChanges();
+                                }
+
+                                if (devicePhoneModel.InfantAccountId != null)
+                                {
+                                    // Elimino las aplicaciones registradas de la anterior cuenta infantil
+                                    var apps = (from app in db.App
+                                                where app.InfantAccountId == devicePhoneModel.InfantAccountId
+                                                && app.DevicePhoneId == devicePhoneModel.DevicePhoneId
+                                                select app).ToList();
+
+                                    db.App.RemoveRange(apps);
+                                    db.SaveChanges();
+                                }                              
+                            }
+                        }
+
+                        // Verifico si hubo cambios en el uso del dispositivo
+                        var devicePhoneUseList = (from deviceUse in db.DevicePhoneUse
+                                                  where deviceUse.DevicePhoneId == devicePhoneModel.DevicePhoneId
+                                                  select deviceUse).ToList();
+
+                        int cont = 0;
+                        foreach(var deviceUse in devicePhoneUseList)
+                        {
+                            int scheduleId = Convert.ToInt32(scheduleIdList[cont]);
+
+                            // Valido si hubo cambios en el horario de uso de cada día
+                            if (deviceUse.ScheduleId != scheduleId)
+                            {
+                                if(!(deviceUse.ScheduleId == null && scheduleId == 0))
+                                {
+
+                                    // Valido si se cambió a Ninguno (ningún horario)
+                                    if (scheduleId == 0)
+                                    {
+                                        deviceUse.ScheduleId = null;
+                                        db.SaveChanges();
+                                    }
+                                    else
+                                    {
+                                        deviceUse.ScheduleId = scheduleId;
+                                        db.SaveChanges();
+                                    }
+                                }
+                            }
+
+                            cont++;
+                        }
+                    }                   
+                }
+
+                return RedirectToAction("DevicePhoneDetails", "Device", new { deviceId = devicePhoneModel.DevicePhoneId });
             }
             catch (Exception ex)
             {

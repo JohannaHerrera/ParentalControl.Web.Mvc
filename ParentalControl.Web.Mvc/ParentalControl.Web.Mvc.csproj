@@ -248,6 +248,7 @@
     <Compile Include="Models\InfantAccountModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
+    <Compile Include="Models\ScheduleOptionModel.cs" />
     <Compile Include="Models\WindowsAccountModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

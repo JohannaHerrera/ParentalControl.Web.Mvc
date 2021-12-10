@@ -329,12 +329,13 @@
 #table-DevicePhone {
     padding-top: 16px;
     padding-bottom: 16px;
-    margin-top: 35px;
-    margin-left: 35px;
+    margin-left: auto;
+    margin-right: auto;
     width: 60%;
     vertical-align: middle;
     font-family: Arial;
     font-size: 18px;
+    margin-top: 30px;
 }
 
     #table-DevicePhone tr td p {
@@ -347,11 +348,11 @@
     }
 
 #table-DeviceUse {
-    padding-top: 16px;
+    padding-top: 0px;
     padding-bottom: 16px;
-    margin-top: 35px;
-    margin-left: 35px;
-    width: 30%;
+    margin-top: 0px;
+    margin-left: 80px;
+    width: 40%;
     vertical-align: middle;
     font-family: Arial;
     font-size: 15px;
@@ -361,10 +362,23 @@
         font-size: 15px;
         margin-top: auto;
         margin-bottom: auto;
-        font-weight: bold;
+        margin-left: 10px;
         font-family: Arial;
-        text-align: center;
+        text-align: left;
     }
+
+#SelectTitle {
+    padding-top: 20px;
+    margin-left: 80px;
+    font-weight: bold;
+    font-family: Arial;
+}
+
+.btnSaveDevicePhone {
+    text-align: center;
+    padding-top: 10px;
+}
+
 
 
 
@@ -453,5 +467,9 @@
 
     #table-Devices {
         margin-left: -35px;
+    }
+
+    .btnSaveDevicePhone {
+        padding-bottom: 50px;
     }
 }
