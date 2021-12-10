@@ -114,7 +114,8 @@ namespace ParentalControl.Web.Mvc.Controllers
                         }
                     }
 
-                    Response.Write("<script>return alert('¡Usuario Registrado!');</script>");
+                    Response.Write("<script>alert('¡Usuario Registrado!');</script>");
+                    ModelState.Clear();
                     return View();
                 }                
             }

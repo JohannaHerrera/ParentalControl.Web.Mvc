@@ -17,5 +17,21 @@ namespace ParentalControl.Web.Mvc.Business.AppConstants
                 return "CurrentUser";
             }
         }
+
+        public string NoProtected
+        {
+            get
+            {
+                return "No Protegido";
+            }
+        }
+
+        public bool Access
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

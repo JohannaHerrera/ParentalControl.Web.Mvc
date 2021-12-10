@@ -11,6 +11,7 @@ namespace ParentalControl.Web.Mvc.Models
         public string DevicePhoneName { get; set; }
         public string DevicePhoneCode { get; set; }
         public int ParentId { get; set; }
-        public int InfantAccountId { get; set; }
+        public int? InfantAccountId { get; set; }
+        public bool deviceProtected { get; set; }
     }
 }

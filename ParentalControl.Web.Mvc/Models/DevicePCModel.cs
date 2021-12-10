@@ -13,6 +13,6 @@ namespace ParentalControl.Web.Mvc.Models
         public string DevicePCCode { get; set; }
         public int ParentId { get; set; }
         public List<WindowsAccountModel> windowsAccountList { get; set; }
-
-    }
+        public bool deviceProtected { get; set; }
+}
 }

@@ -1,9 +1,9 @@
-﻿@model ParentalControl.Web.Mvc.Models.DevicePCModel
+﻿@model ParentalControl.Web.Mvc.Models.DevicePhoneModel
 
 @{
-    ViewBag.Title = "DevicePcDetails";
-    ViewBag.WindowsAccounts = Model.windowsAccountList;
+    ViewBag.Title = "DevicePhoneDetails";
 }
+
 
 <!DOCTYPE html>
 <html>
@@ -39,51 +39,65 @@
                     </div>
                 </div>
                 <div class="info-Section">
-                    @using (Html.BeginForm("DevicePcDetails", "Device", FormMethod.Post, new { @id = "frmSaveDeviceChanges" }))
+                    @using (Html.BeginForm("DevicePhoneDetails", "Device", FormMethod.Post, new { @id = "frmSaveDeviceChanges" }))
                     {
-                        @Html.HiddenFor(m => m.DevicePCId)
+                        @Html.HiddenFor(m => m.DevicePhoneId)
                         @Html.HiddenFor(m => m.ParentId)
-                        @Html.Hidden("windowsAccounts", "");
-                        @Html.Hidden("infantAccountsSelected", "");
+                        @Html.Hidden("infantAccountSelected", "");
 
                         <div id="deviceName">
                             <a href='@Url.Action("Index", "Device")'><img src="~/Content/Images/flecha-izquierda.png"></a>
                             <div id="sectionTitle">
-                                @Html.TextBoxFor(m => m.DevicePCName, (object)new { @disabled = true, @id = "nameDevicePc" })
+                                @Html.TextBoxFor(m => m.DevicePhoneName, (object)new { @disabled = true, @id = "nameDevicePc" })
                             </div>
                             <button type="button" onclick="Habilitar(); return false;"><img src="~/Content/Images/edit.png"></button>
                             <hr />
                         </div>
 
                         <div>
-                            <table id="table-Windows-Accounts" class="table">
+                            <table id="table-DevicePhone" class="table">
                                 <tr>
-                                    <th>Cuentas Windows</th>
-                                    <th>Cuentas Infantiles</th>
+                                    <td>
+                                        <p>Asignado a:</p>
+                                    </td>
+                                    <td>
+                                        @if (Model.InfantAccountId == null)
+                                        {
+                                            @Html.DropDownList("infantAccounts", ViewData["infantAccounts"] as SelectList)
+                                        }
+                                        else
+                                        {
+                                            <select id="infantAccounts" name="infantAccounts">
+                                                @foreach (SelectListItem option in ViewData["infantAccounts"] as SelectList)
+                                                {
+                                                    <option value="@option.Value" @(option.Value == Model.InfantAccountId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                }
+                                            </select>
+                                        }
+                                    </td>
                                 </tr>
-                                @foreach (var item in Model.windowsAccountList)
-                                {
-                                    <tr>
-                                        <td>
-                                            <p>@Html.DisplayFor(modelItem => item.WindowsAccountName)</p>
-                                        </td>
-                                        <td>
-                                            @if (item.InfantAccountId == null)
-                                            {
-                                                @Html.DropDownList("infantAccounts", ViewData["infantAccounts"] as SelectList)
-                                            }
-                                            else
-                                            {
-                                                <select id="infantAccounts" name="infantAccounts">
-                                                    @foreach (SelectListItem option in ViewData["infantAccounts"] as SelectList)
-                                                    {
-                                                        <option value="@option.Value" @(option.Value == item.InfantAccountId.ToString() ? "selected='selected'" : "")>@option.Text</option>
-                                                    }
-                                                </select>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
+                            </table>
+                            <table id="table-DeviceUse" class="table">
+                                <tr>
+                                    <td>
+                                        <p>Asignado a:</p>
+                                    </td>
+                                    <td>
+                                        @if (Model.InfantAccountId == null)
+                                        {
+                                            @Html.DropDownList("infantAccounts", ViewData["infantAccounts"] as SelectList)
+                                        }
+                                        else
+                                        {
+                                            <select id="infantAccounts" name="infantAccounts">
+                                                @foreach (SelectListItem option in ViewData["infantAccounts"] as SelectList)
+                                                {
+                                                    <option value="@option.Value" @(option.Value == Model.InfantAccountId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                }
+                                            </select>
+                                        }
+                                    </td>
+                                </tr>
                             </table>
                         </div>
 
@@ -126,7 +140,7 @@
             accounts.push(table.rows[r].cells[0].innerText);
         }
 
-        $("#windowsAccounts").val(accounts);  
+        $("#windowsAccounts").val(accounts);
 
         var dropDownList = document.getElementsByName('infantAccounts');
         var result = [];
@@ -151,4 +165,3 @@
         form.submit();
     }
 </script>
-

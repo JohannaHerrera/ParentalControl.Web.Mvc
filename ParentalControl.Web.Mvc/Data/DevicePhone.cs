@@ -18,6 +18,7 @@ namespace ParentalControl.Web.Mvc.Data
         public DevicePhone()
         {
             this.App = new HashSet<App>();
+            this.AppDevice = new HashSet<AppDevice>();
             this.DevicePhoneUse = new HashSet<DevicePhoneUse>();
         }
     
@@ -25,11 +26,13 @@ namespace ParentalControl.Web.Mvc.Data
         public string DevicePhoneName { get; set; }
         public string DevicePhoneCode { get; set; }
         public System.DateTime DevicePhoneCreationDate { get; set; }
-        public int InfantAccountId { get; set; }
+        public Nullable<int> InfantAccountId { get; set; }
         public int ParentId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<App> App { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AppDevice> AppDevice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DevicePhoneUse> DevicePhoneUse { get; set; }
         public virtual InfantAccount InfantAccount { get; set; }
