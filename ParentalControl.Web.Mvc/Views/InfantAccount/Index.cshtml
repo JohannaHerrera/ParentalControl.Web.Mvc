@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ParentalControl.Web.Mvc.Models.ScheduleModel>
+﻿@model IEnumerable<ParentalControl.Web.Mvc.Models.InfantAccountModel>
 
 @{
     ViewBag.Title = "Index";
@@ -19,7 +19,7 @@
         <div class="rowMenu">
             <div class="vertical-menu">
                 <a href='@Url.Action("Index", "News")' id="logoImgMenu"><img src="~/Content/Images/icono-menu.png"></a>
-                <a href="#"><img src="~/Content/Images/children.png"></a>
+                <a href="@Url.Action("Index", "InfantAccount")"><img src="~/Content/Images/children.png"></a>
                 <a href="@Url.Action("Index", "InfantAccount")">Cuentas Infantiles</a>
                 <a href='@Url.Action("Index", "Device")'><img src="~/Content/Images/devices.png"></a>
                 <a href='@Url.Action("Index", "Device")'>Dispositivos</a>
@@ -41,30 +41,43 @@
                 {
                     <div class="info-Section">
                         <p>
-                            @Html.ActionLink("Añadir horarios", "Create")
+                            @Html.ActionLink("Añadir Hijo", "AddInfantAccount")
                         </p>
                         <div>
-                            <h2 id="sectionTitle">Dispositivos PC</h2>
+                            <h2 id="sectionTitle">Hijos</h2>
                             <hr />
                             <div id="sectionTable">
                                 <table id="table-Devices" class="table">
                                     @foreach (var item in Model)
                                     {
+
+
                                         <tr>
-
-                                        @*<td>
-                                        <img src="~/Content/Images/windows.png">
-                                        </td>*@
+                                            @if (item.InfantGender=="Masculino") 
+                                            { 
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.ScheduleStartTime)
+                                                    <img class="img-responsive text-center" src="~/Content/Images/hijo 64.png">
                                                 </td>
+                                            }
+                                            else 
+                                            {
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.ScheduleEndTime)
+                                                    <img src="~/Content/Images/nina_64.png">
                                                 </td>
-
-                                                @*<td>
-                                            <a href='@Url.Action("DevicePcDetails", "Device", new { deviceId = item.DevicePCId })'><img src="~/Content/Images/flecha-correcta.png"></a>
-                                        </td>*@
+                                            }
+                                            
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.InfantName)
+                                            </td>
+                                            <td>
+                                                <img src="~/Content/Images/editar 32.png">
+                                            </td>
+                                            <td>
+                                                <img src="~/Content/Images/eliminar 32.png">
+                                            </td>
+                                            <td>
+                                                <img src="~/Content/Images/flecha 32.png">
+                                            </td>
                                         </tr>
                                     }
                                 </table>
@@ -90,3 +103,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>
+

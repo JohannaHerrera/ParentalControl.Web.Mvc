@@ -172,6 +172,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InfantAccountController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Data\Activity.cs">
@@ -242,6 +243,7 @@
     <Compile Include="Models\DeviceListModel.cs" />
     <Compile Include="Models\DevicePCModel.cs" />
     <Compile Include="Models\DevicePhoneModel.cs" />
+    <Compile Include="Models\InfantAccountModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
     <Compile Include="Models\WindowsAccountModel.cs" />
@@ -258,9 +260,18 @@
     <Content Include="Content\Images\calendario.png" />
     <Content Include="Content\Images\children.png" />
     <Content Include="Content\Images\control-parental.png" />
+    <Content Include="Content\Images\delete.png" />
     <Content Include="Content\Images\devices.png" />
+    <Content Include="Content\Images\edit.png" />
+    <Content Include="Content\Images\editar 32.png" />
+    <Content Include="Content\Images\eliminar 32.png" />
+    <Content Include="Content\Images\flecha 32.png" />
     <Content Include="Content\Images\flecha-correcta.png" />
+    <Content Include="Content\Images\hijo 64.png" />
+    <Content Include="Content\Images\hijo.png" />
     <Content Include="Content\Images\icono-menu.png" />
+    <Content Include="Content\Images\nina.png" />
+    <Content Include="Content\Images\nina_64.png" />
     <Content Include="Content\Images\notificaciones.png" />
     <Content Include="Content\Images\windows.png" />
     <Content Include="Content\ParentalControlStyle.css" />
@@ -328,6 +339,8 @@
     <Content Include="Views\Device\DevicePcDetails.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
+    <Content Include="Views\InfantAccount\Index.cshtml" />
+    <Content Include="Views\InfantAccount\AddInfantAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
