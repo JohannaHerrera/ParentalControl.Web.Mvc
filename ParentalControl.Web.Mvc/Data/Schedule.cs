@@ -11,7 +11,8 @@ namespace ParentalControl.Web.Mvc.Data
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Schedule
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,7 +24,9 @@ namespace ParentalControl.Web.Mvc.Data
         }
     
         public int ScheduleId { get; set; }
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public System.DateTime ScheduleStartTime { get; set; }
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public System.DateTime ScheduleEndTime { get; set; }
         public System.DateTime ScheduleCreationDate { get; set; }
         public int ParentId { get; set; }
