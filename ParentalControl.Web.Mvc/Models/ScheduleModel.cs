@@ -10,6 +10,7 @@ namespace ParentalControl.Web.Mvc.Models
     {
 
         public int ScheduleId { get; set; }
+        //[DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}",ApplyFormatInEditMode =true)]
         public DateTime ScheduleStartTime { get; set; }
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]

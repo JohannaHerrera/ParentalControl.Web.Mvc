@@ -40,34 +40,40 @@
                 @if (Model.Count() > 0)
                 {
                     <div class="info-Section">
-                        <p>
-                            @Html.ActionLink("Añadir horarios", "Create")
-                        </p>
                         <div>
                             <h2 id="sectionTitle">Dispositivos PC</h2>
                             <hr />
                             <div id="sectionTable">
                                 <table id="table-Devices" class="table">
+                                    <tr>
+                                        <td>
+                                            <h3 id="TitleBlue">Hora Inicio</h3>
+                                        </td>
+                                        <td>
+                                            <h3 id="TitleBlue">Hora Fin</h3>
+                                        </td>
+                                    </tr>
                                     @foreach (var item in Model)
                                     {
-                                        <tr>
-
-                                        @*<td>
-                                        <img src="~/Content/Images/windows.png">
-                                        </td>*@
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ScheduleStartTime)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ScheduleEndTime)
-                                                </td>
-
-                                                @*<td>
-                                            <a href='@Url.Action("DevicePcDetails", "Device", new { deviceId = item.DevicePCId })'><img src="~/Content/Images/flecha-correcta.png"></a>
-                                        </td>*@
-                                        </tr>
+                                     <tr>
+                                         <td>
+                                            @Html.DisplayFor(modelItem => item.ScheduleStartTime)
+                                         </td>
+                                         <td>
+                                            @Html.DisplayFor(modelItem => item.ScheduleEndTime)
+                                         </td>
+                                         <td>
+                                             <a @*href='@Url.Action("DevicePhoneDetails", "Device", new { deviceId = item.DevicePhoneId })'><img src="~/Content/Images/flecha-correcta.png"*@></a>
+                                             @Html.ActionLink("Editar", "Edit", new { scheduleId = item.ScheduleId })|
+                                             @Html.ActionLink("Delete", "Delete", new { scheduleId = item.ScheduleId })
+                                             
+                                         </td>
+                                     </tr>
                                     }
                                 </table>
+                                <p>
+                                    @Html.ActionLink("Añadir horarios", "Create")
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -80,6 +86,9 @@
                         <div id="sectionTable">
                             <div class="noData">
                                 <h3>Aún no has creado horarios</h3>
+                                <p>
+                                    @Html.ActionLink("Añadir horarios", "Create")
+                                </p>
                             </div>
                         </div>
                     </div>

@@ -339,6 +339,8 @@
     <Content Include="Views\Device\DevicePcDetails.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
+    <Content Include="Views\Schedule\Edit.cshtml" />
+    <Content Include="Views\Schedule\Delete.cshtml" />
     <Content Include="Views\InfantAccount\Index.cshtml" />
     <Content Include="Views\InfantAccount\AddInfantAccount.cshtml" />
   </ItemGroup>
