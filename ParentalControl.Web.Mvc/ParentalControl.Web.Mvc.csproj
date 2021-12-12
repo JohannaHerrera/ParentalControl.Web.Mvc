@@ -173,6 +173,7 @@
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Data\Activity.cs">
       <DependentUpon>ParentalControlDB.tt</DependentUpon>
@@ -248,6 +249,7 @@
     <Compile Include="Models\InfantAccountModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
+    <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\ScheduleOptionModel.cs" />
     <Compile Include="Models\WindowsAccountModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
@@ -268,6 +270,8 @@
     <Content Include="Content\Images\flecha-correcta.png" />
     <Content Include="Content\Images\flecha-izquierda.png" />
     <Content Include="Content\Images\icono-menu.png" />
+    <Content Include="Content\Images\ninaRequest.png" />
+    <Content Include="Content\Images\ninoRequest.png" />
     <Content Include="Content\Images\notificaciones.png" />
     <Content Include="Content\Images\windows.png" />
     <Content Include="Content\ParentalControlStyle.css" />
@@ -338,6 +342,9 @@
     <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\Schedule\Edit.cshtml" />
     <Content Include="Views\Schedule\Delete.cshtml" />
+    <Content Include="Views\Device\DeleteDevicePC.cshtml" />
+    <Content Include="Views\Device\DeleteDevicePhone.cshtml" />
+    <Content Include="Views\Notification\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

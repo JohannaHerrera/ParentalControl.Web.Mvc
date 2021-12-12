@@ -1,0 +1,113 @@
+﻿@model List<ParentalControl.Web.Mvc.Models.RequestModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKN - Control Parental</title>
+    @Styles.Render("~/Content/ParentalControlStyle.css")
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="containerDashboard">
+        <div class="rowMenu">
+            <div class="vertical-menu">
+                <a href='@Url.Action("Index", "News")' id="logoImgMenu"><img src="~/Content/Images/icono-menu.png"></a>
+                <a href="#"><img src="~/Content/Images/children.png"></a>
+                <a href="#">Cuentas Infantiles</a>
+                <a href='@Url.Action("Index", "Device")'><img src="~/Content/Images/devices.png"></a>
+                <a href='@Url.Action("Index", "Device")'>Dispositivos</a>
+                <a href='@Url.Action("Index", "Schedule")'><img src="~/Content/Images/calendario.png"></a>
+                <a href='@Url.Action("Index", "Schedule")'>Horarios</a>
+                <a href="#"><img src="~/Content/Images/notificaciones.png"></a>
+                <a href="#">Notificaciones</a>
+            </div>
+            <div class="info-Content">
+                <div id="menu-Parent">
+                    <div class="button-menu-Parent">
+                        @Html.ActionLink("Cerrar Sesión", "Login", "Account", new { area = "" }, new { @class = "button-parent" })
+                    </div>
+                    <div class="button-menu-Parent">
+                        @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
+                    </div>
+                </div>
+                @if (Model.Count() > 0 || Model.Count() > 0)
+                {
+                    <div class="info-Section">
+                        <div>
+                            <h2 id="sectionTitle">Notificaciones</h2>
+                            <hr />
+                            <div id="sectionTable">
+                                <table id="table-Notifications" class="table">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (item.InfantGender == "Femenino")
+                                                {
+                                                    <img src="~/Content/Images/ninaRequest.png">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Content/Images/ninoRequest.png">
+                                                }
+                                            </td>
+                                            <td>
+                                                <h6>@item.InfantName</h6>
+                                            </td>
+                                            <td>
+                                                <p>@item.MessageNotification</p>
+                                            </td>
+                                            <td>
+                                                @if (item.RequestState == 0)
+                                                {
+                                                    <div>
+                                                        @Html.HiddenFor(model => item.RequestId)
+                                                        <button type="button" class="btn-Aprobar" onclick="@("window.location.href='" + @Url.Action("ApproveRequest", "Notification", new { requestId = item.RequestId }) + "'");">Aprobar</button>
+                                                        <button type="button" class="btn-Desaprobar" onclick="@("window.location.href='" + @Url.Action("DispproveRequest", "Notification", new { requestId = item.RequestId }) + "'");">Desaprobar</button>
+                                                    </div>
+                                                }
+                                                else if (item.RequestState == 1)
+                                                {
+                                                    <button type="button" class="btn-Gray" disabled="disabled">Aprobado</button>
+                                                }
+                                                else if (item.RequestState == 2)
+                                                {
+                                                    <button type="button" class="btn-Gray" disabled="disabled">Desaprobado</button>
+                                                }
+                                                else if (item.RequestState == 3)
+                                                {
+                                                    <button type="button" class="btn-SinRespuesta" disabled="disabled">Sin Respuesta</button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="info-Section">
+                        <h2 id="sectionTitle"></h2>
+                        <hr />
+                        <div id="sectionTable">
+                            <div class="noData">
+                                <h3>Aún no tienes notificaciones.</h3>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
