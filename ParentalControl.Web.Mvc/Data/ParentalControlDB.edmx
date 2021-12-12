@@ -30,6 +30,16 @@
           <Property Name="AppAccessPermission" Type="bit" />
           <Property Name="AppCreationDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="AppDevice">
+          <Key>
+            <PropertyRef Name="AppDeviceId" />
+          </Key>
+          <Property Name="AppDeviceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DevicePhoneId" Type="int" />
+          <Property Name="DevicePCId" Type="int" />
+          <Property Name="AppDeviceName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="AppDeviceCreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="DevicePC">
           <Key>
             <PropertyRef Name="DevicePCId" />
@@ -48,7 +58,7 @@
           <Property Name="DevicePhoneName" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="DevicePhoneCode" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DevicePhoneCreationDate" Type="datetime" Nullable="false" />
-          <Property Name="InfantAccountId" Type="int" Nullable="false" />
+          <Property Name="InfantAccountId" Type="int" />
           <Property Name="ParentId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DevicePhoneUse">
@@ -161,7 +171,7 @@
           <Property Name="WindowsAccountName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="WindowsAccountCreationDate" Type="datetime" Nullable="false" />
           <Property Name="DevicePCId" Type="int" Nullable="false" />
-          <Property Name="InfantAccountId" Type="int" Nullable="false" />
+          <Property Name="InfantAccountId" Type="int" />
         </EntityType>
         <Association Name="Activity_InfantAccount_fk01">
           <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="1" />
@@ -220,6 +230,30 @@
             </Principal>
             <Dependent Role="App">
               <PropertyRef Name="ScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AppDevice_DevicePC_fk01">
+          <End Role="DevicePC" Type="Self.DevicePC" Multiplicity="0..1" />
+          <End Role="AppDevice" Type="Self.AppDevice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DevicePC">
+              <PropertyRef Name="DevicePCId" />
+            </Principal>
+            <Dependent Role="AppDevice">
+              <PropertyRef Name="DevicePCId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AppDevice_DevicePhone_fk02">
+          <End Role="DevicePhone" Type="Self.DevicePhone" Multiplicity="0..1" />
+          <End Role="AppDevice" Type="Self.AppDevice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DevicePhone">
+              <PropertyRef Name="DevicePhoneId" />
+            </Principal>
+            <Dependent Role="AppDevice">
+              <PropertyRef Name="DevicePhoneId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -308,7 +342,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_WindowsAccount_InfantAccount">
-          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="1" />
+          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="0..1" />
           <End Role="WindowsAccount" Type="Self.WindowsAccount" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InfantAccount">
@@ -320,7 +354,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="InfantAccount_DevicePhoneFk">
-          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="1" />
+          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="0..1" />
           <End Role="DevicePhone" Type="Self.DevicePhone" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InfantAccount">
@@ -418,6 +452,7 @@
         <EntityContainer Name="ParentalControlDBModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="App" EntityType="Self.App" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppDevice" EntityType="Self.AppDevice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DevicePC" EntityType="Self.DevicePC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DevicePhone" EntityType="Self.DevicePhone" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DevicePhoneUse" EntityType="Self.DevicePhoneUse" Schema="dbo" store:Type="Tables" />
@@ -450,6 +485,14 @@
           <AssociationSet Name="App_Schedule_fk04" Association="Self.App_Schedule_fk04">
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="App" EntitySet="App" />
+          </AssociationSet>
+          <AssociationSet Name="AppDevice_DevicePC_fk01" Association="Self.AppDevice_DevicePC_fk01">
+            <End Role="DevicePC" EntitySet="DevicePC" />
+            <End Role="AppDevice" EntitySet="AppDevice" />
+          </AssociationSet>
+          <AssociationSet Name="AppDevice_DevicePhone_fk02" Association="Self.AppDevice_DevicePhone_fk02">
+            <End Role="DevicePhone" EntitySet="DevicePhone" />
+            <End Role="AppDevice" EntitySet="AppDevice" />
           </AssociationSet>
           <AssociationSet Name="DevicePhone_DevicePhoneUseFk" Association="Self.DevicePhone_DevicePhoneUseFk">
             <End Role="DevicePhone" EntitySet="DevicePhone" />
@@ -551,6 +594,18 @@
           <NavigationProperty Name="InfantAccount" Relationship="Self.App_InfantAccount_fk03" FromRole="App" ToRole="InfantAccount" />
           <NavigationProperty Name="Schedule" Relationship="Self.App_Schedule_fk04" FromRole="App" ToRole="Schedule" />
         </EntityType>
+        <EntityType Name="AppDevice">
+          <Key>
+            <PropertyRef Name="AppDeviceId" />
+          </Key>
+          <Property Name="AppDeviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DevicePhoneId" Type="Int32" />
+          <Property Name="DevicePCId" Type="Int32" />
+          <Property Name="AppDeviceName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AppDeviceCreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="DevicePC" Relationship="Self.AppDevice_DevicePC_fk01" FromRole="AppDevice" ToRole="DevicePC" />
+          <NavigationProperty Name="DevicePhone" Relationship="Self.AppDevice_DevicePhone_fk02" FromRole="AppDevice" ToRole="DevicePhone" />
+        </EntityType>
         <EntityType Name="DevicePC">
           <Key>
             <PropertyRef Name="DevicePCId" />
@@ -561,6 +616,7 @@
           <Property Name="DevicePCCreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ParentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="App" Relationship="Self.App_DevicePC_fk01" FromRole="DevicePC" ToRole="App" />
+          <NavigationProperty Name="AppDevice" Relationship="Self.AppDevice_DevicePC_fk01" FromRole="DevicePC" ToRole="AppDevice" />
           <NavigationProperty Name="Parent" Relationship="Self.fk_DevicePC_Parent" FromRole="DevicePC" ToRole="Parent" />
           <NavigationProperty Name="WindowsAccount" Relationship="Self.fk_WindowsAccount_DevicePC" FromRole="DevicePC" ToRole="WindowsAccount" />
         </EntityType>
@@ -572,9 +628,10 @@
           <Property Name="DevicePhoneName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DevicePhoneCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DevicePhoneCreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="InfantAccountId" Type="Int32" Nullable="false" />
+          <Property Name="InfantAccountId" Type="Int32" />
           <Property Name="ParentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="App" Relationship="Self.App_DevicePhone_fk02" FromRole="DevicePhone" ToRole="App" />
+          <NavigationProperty Name="AppDevice" Relationship="Self.AppDevice_DevicePhone_fk02" FromRole="DevicePhone" ToRole="AppDevice" />
           <NavigationProperty Name="DevicePhoneUse" Relationship="Self.DevicePhone_DevicePhoneUseFk" FromRole="DevicePhone" ToRole="DevicePhoneUse" />
           <NavigationProperty Name="InfantAccount" Relationship="Self.InfantAccount_DevicePhoneFk" FromRole="DevicePhone" ToRole="InfantAccount" />
           <NavigationProperty Name="Parent" Relationship="Self.Parent_DevicePhoneFk" FromRole="DevicePhone" ToRole="Parent" />
@@ -717,7 +774,7 @@
           <Property Name="WindowsAccountName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="WindowsAccountCreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DevicePCId" Type="Int32" Nullable="false" />
-          <Property Name="InfantAccountId" Type="Int32" Nullable="false" />
+          <Property Name="InfantAccountId" Type="Int32" />
           <NavigationProperty Name="DevicePC" Relationship="Self.fk_WindowsAccount_DevicePC" FromRole="WindowsAccount" ToRole="DevicePC" />
           <NavigationProperty Name="InfantAccount" Relationship="Self.fk_WindowsAccount_InfantAccount" FromRole="WindowsAccount" ToRole="InfantAccount" />
         </EntityType>
@@ -781,6 +838,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="AppDevice_DevicePC_fk01">
+          <End Role="DevicePC" Type="Self.DevicePC" Multiplicity="0..1" />
+          <End Role="AppDevice" Type="Self.AppDevice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DevicePC">
+              <PropertyRef Name="DevicePCId" />
+            </Principal>
+            <Dependent Role="AppDevice">
+              <PropertyRef Name="DevicePCId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AppDevice_DevicePhone_fk02">
+          <End Role="DevicePhone" Type="Self.DevicePhone" Multiplicity="0..1" />
+          <End Role="AppDevice" Type="Self.AppDevice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DevicePhone">
+              <PropertyRef Name="DevicePhoneId" />
+            </Principal>
+            <Dependent Role="AppDevice">
+              <PropertyRef Name="DevicePhoneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_DevicePC_Parent">
           <End Role="Parent" Type="Self.Parent" Multiplicity="1" />
           <End Role="DevicePC" Type="Self.DevicePC" Multiplicity="*" />
@@ -818,7 +899,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="InfantAccount_DevicePhoneFk">
-          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="1" />
+          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="0..1" />
           <End Role="DevicePhone" Type="Self.DevicePhone" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InfantAccount">
@@ -890,7 +971,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_WindowsAccount_InfantAccount">
-          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="1" />
+          <End Role="InfantAccount" Type="Self.InfantAccount" Multiplicity="0..1" />
           <End Role="WindowsAccount" Type="Self.WindowsAccount" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="InfantAccount">
@@ -976,6 +1057,7 @@
         <EntityContainer Name="ParentalControlDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activity" EntityType="Self.Activity" />
           <EntitySet Name="App" EntityType="Self.App" />
+          <EntitySet Name="AppDevice" EntityType="Self.AppDevice" />
           <EntitySet Name="DevicePC" EntityType="Self.DevicePC" />
           <EntitySet Name="DevicePhone" EntityType="Self.DevicePhone" />
           <EntitySet Name="DevicePhoneUse" EntityType="Self.DevicePhoneUse" />
@@ -1008,6 +1090,14 @@
           <AssociationSet Name="App_Schedule_fk04" Association="Self.App_Schedule_fk04">
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="App" EntitySet="App" />
+          </AssociationSet>
+          <AssociationSet Name="AppDevice_DevicePC_fk01" Association="Self.AppDevice_DevicePC_fk01">
+            <End Role="DevicePC" EntitySet="DevicePC" />
+            <End Role="AppDevice" EntitySet="AppDevice" />
+          </AssociationSet>
+          <AssociationSet Name="AppDevice_DevicePhone_fk02" Association="Self.AppDevice_DevicePhone_fk02">
+            <End Role="DevicePhone" EntitySet="DevicePhone" />
+            <End Role="AppDevice" EntitySet="AppDevice" />
           </AssociationSet>
           <AssociationSet Name="fk_DevicePC_Parent" Association="Self.fk_DevicePC_Parent">
             <End Role="Parent" EntitySet="Parent" />
@@ -1104,6 +1194,17 @@
                 <ScalarProperty Name="AppStatus" ColumnName="AppStatus" />
                 <ScalarProperty Name="AppAccessPermission" ColumnName="AppAccessPermission" />
                 <ScalarProperty Name="AppCreationDate" ColumnName="AppCreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppDevice">
+            <EntityTypeMapping TypeName="ParentalControlDBModel.AppDevice">
+              <MappingFragment StoreEntitySet="AppDevice">
+                <ScalarProperty Name="AppDeviceId" ColumnName="AppDeviceId" />
+                <ScalarProperty Name="DevicePhoneId" ColumnName="DevicePhoneId" />
+                <ScalarProperty Name="DevicePCId" ColumnName="DevicePCId" />
+                <ScalarProperty Name="AppDeviceName" ColumnName="AppDeviceName" />
+                <ScalarProperty Name="AppDeviceCreationDate" ColumnName="AppDeviceCreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,15 +12,15 @@ namespace ParentalControl.Web.Mvc.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class WindowsAccount
+    public partial class AppDevice
     {
-        public int WindowsAccountId { get; set; }
-        public string WindowsAccountName { get; set; }
-        public System.DateTime WindowsAccountCreationDate { get; set; }
-        public int DevicePCId { get; set; }
-        public Nullable<int> InfantAccountId { get; set; }
+        public int AppDeviceId { get; set; }
+        public Nullable<int> DevicePhoneId { get; set; }
+        public Nullable<int> DevicePCId { get; set; }
+        public string AppDeviceName { get; set; }
+        public System.DateTime AppDeviceCreationDate { get; set; }
     
         public virtual DevicePC DevicePC { get; set; }
-        public virtual InfantAccount InfantAccount { get; set; }
+        public virtual DevicePhone DevicePhone { get; set; }
     }
 }

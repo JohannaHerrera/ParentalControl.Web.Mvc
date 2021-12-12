@@ -115,7 +115,7 @@
 
 .vertical-menu {
     width: 200px;
-    height: 100vh !important;
+    height: 120vh !important;
     background-color: Highlight;
     justify-content: left !important;
     align-content: center !important;
@@ -191,6 +191,10 @@
     font-size: 12px;
 }
 
+    #table-News tr {
+        vertical-align: middle;
+    }
+
 #newsTitle {
     text-align: center !important;
     font-family: Arial !important;
@@ -252,15 +256,135 @@
     margin-top: 25px;
     font-family: Arial !important;
     font-size: 12px;
+    width: 45%;
+    text-align: center;
 }
+
+#table-Devices h5{
+    font-weight: bold;
+}
+
+    #table-Devices tr {
+        vertical-align: middle;
+    }
+
+        #table-Devices tr td {
+            padding-bottom: 20px;
+        }
 
 #devicePhoneTable {
-    padding-top: 25px;
+    padding-top: 30px;
 }
-/*ScheduleCreate*/
-.menu-registerSchedule{
 
+#deviceName{
+    display: inline-flex;
 }
+
+#deviceName a {
+    padding-right: 20px;
+}
+
+    #deviceName button {
+        padding-left: 20px;
+        border: none;
+        background-color: white;
+        padding-bottom: 20px;
+    }
+
+#table-Windows-Accounts {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-top: 25px;   
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    vertical-align: middle;
+    font-family: Arial;
+}
+
+    #table-Windows-Accounts tr th {
+        font-family: Arial !important;
+        font-size: 22px;
+        color: #5D5857;
+        padding-bottom: 20px;
+    }
+
+    #table-Windows-Accounts tr td p {
+        font-size: 17px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+.btnSave {
+    text-align: center;
+    padding-top: 40px;
+}
+
+#btnGuardar{
+    width: 12%;
+    font-weight: bold;
+}
+
+#table-DevicePhone {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    vertical-align: middle;
+    font-family: Arial;
+    font-size: 18px;
+    margin-top: 30px;
+}
+
+    #table-DevicePhone tr td p {
+        font-size: 20px;
+        margin-top: auto;
+        margin-bottom: auto;
+        font-weight: bold;
+        font-family: Arial;
+        text-align: center;
+    }
+
+#table-DeviceUse {
+    padding-top: 0px;
+    padding-bottom: 16px;
+    margin-top: 0px;
+    margin-left: 80px;
+    width: 40%;
+    vertical-align: middle;
+    font-family: Arial;
+    font-size: 15px;
+}
+
+    #table-DeviceUse tr td p {
+        font-size: 15px;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 10px;
+        font-family: Arial;
+        text-align: left;
+    }
+
+#SelectTitle {
+    padding-top: 20px;
+    margin-left: 80px;
+    font-weight: bold;
+    font-family: Arial;
+}
+
+.btnSaveDevicePhone {
+    text-align: center;
+    padding-top: 10px;
+}
+
+
+
+
+
+
+
 
 
 
@@ -322,5 +446,30 @@
             width: 50%;
             height: auto;
             padding-top: 25px;
-        }    
+        }
+
+    #deviceName{
+        width: 350px;
+    }
+
+        #deviceName div input {
+            width: 200px;
+            font-size: 20px;
+        }
+
+    #btnGuardar {
+        width: 50%;
+    }
+
+    .btnSave {
+        padding-bottom: 50px;
+    }
+
+    #table-Devices {
+        margin-left: -35px;
+    }
+
+    .btnSaveDevicePhone {
+        padding-bottom: 50px;
+    }
 }

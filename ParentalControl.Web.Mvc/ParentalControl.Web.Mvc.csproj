@@ -181,6 +181,9 @@
     <Compile Include="Data\App.cs">
       <DependentUpon>ParentalControlDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\AppDevice.cs">
+      <DependentUpon>ParentalControlDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\DevicePC.cs">
       <DependentUpon>ParentalControlDB.tt</DependentUpon>
     </Compile>
@@ -246,6 +249,7 @@
     <Compile Include="Models\InfantAccountModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
+    <Compile Include="Models\ScheduleOptionModel.cs" />
     <Compile Include="Models\WindowsAccountModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -257,6 +261,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\android.png" />
+    <Content Include="Content\Images\borrar.png" />
     <Content Include="Content\Images\calendario.png" />
     <Content Include="Content\Images\children.png" />
     <Content Include="Content\Images\control-parental.png" />
@@ -269,6 +274,7 @@
     <Content Include="Content\Images\flecha-correcta.png" />
     <Content Include="Content\Images\hijo 64.png" />
     <Content Include="Content\Images\hijo.png" />
+    <Content Include="Content\Images\flecha-izquierda.png" />
     <Content Include="Content\Images\icono-menu.png" />
     <Content Include="Content\Images\nina.png" />
     <Content Include="Content\Images\nina_64.png" />
@@ -337,6 +343,7 @@
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Device\Index.cshtml" />
     <Content Include="Views\Device\DevicePcDetails.cshtml" />
+    <Content Include="Views\Device\DevicePhoneDetails.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\Schedule\Edit.cshtml" />

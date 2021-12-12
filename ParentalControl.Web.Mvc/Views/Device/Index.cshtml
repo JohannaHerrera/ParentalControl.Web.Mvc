@@ -54,10 +54,21 @@
                                                     <img src="~/Content/Images/windows.png">
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.DevicePCName)
+                                                    <h5>@Html.DisplayFor(modelItem => item.DevicePCName)</h5>
+                                                    @if (item.deviceProtected)
+                                                    {
+                                                        <h6>Protegido</h6>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h6>No Protegido</h6>
+                                                    }
                                                 </td>
                                                 <td>
                                                     <a href='@Url.Action("DevicePcDetails", "Device", new { deviceId = item.DevicePCId })'><img src="~/Content/Images/flecha-correcta.png"></a>
+                                                </td>
+                                                <td>
+                                                    <a href='@Url.Action("DevicePcDetails", "Device", new { deviceId = item.DevicePCId })'><img src="~/Content/Images/borrar.png"></a>
                                                 </td>
                                             </tr>
                                         }
@@ -80,10 +91,21 @@
                                                     <img src="~/Content/Images/android.png">
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.DevicePhoneName)
+                                                    <h5>@Html.DisplayFor(modelItem => item.DevicePhoneName)</h5>
+                                                    @if (item.deviceProtected)
+                                                    {
+                                                        <h6>Protegido</h6>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h6>No Protegido</h6>
+                                                    }
                                                 </td>
                                                 <td>
-                                                    <a href='@Url.Action("DevicePhoneDetails", "Device", new { deviceId = item.DevicePhoneId })'><img src="~/Content/Images/flecha-correcta.png"></a>                                                   
+                                                    <a href='@Url.Action("DevicePhoneDetails", "Device", new { deviceId = item.DevicePhoneId })'><img src="~/Content/Images/flecha-correcta.png"></a>
+                                                </td>
+                                                <td>
+                                                    <a href='@Url.Action("DevicePhoneDetails", "Device", new { deviceId = item.DevicePhoneId })'><img src="~/Content/Images/borrar.png"></a>
                                                 </td>
                                             </tr>
                                         }
