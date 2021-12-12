@@ -343,6 +343,7 @@
     <Content Include="Views\Schedule\Delete.cshtml" />
     <Content Include="Views\InfantAccount\Index.cshtml" />
     <Content Include="Views\InfantAccount\AddInfantAccount.cshtml" />
+    <Content Include="Views\InfantAccount\EditInfantAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

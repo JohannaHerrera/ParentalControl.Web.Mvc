@@ -2,7 +2,7 @@
 @model ParentalControl.Web.Mvc.Models.InfantAccountModel
 
 @{
-    ViewBag.Title = "AddInfantAccount";
+    ViewBag.Title = "EditInfantAccount";
 }
 
 <!DOCTYPE html>
@@ -38,10 +38,11 @@
                         @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
                     </div>
                 </div>
-                @using (Html.BeginForm("AddInfantAccount", "InfantAccount", FormMethod.Post))
+                @using (Html.BeginForm("EditInfantAccount", "InfantAccount", FormMethod.Post))
                 {
                     <div class="row">
                         <div class="col-12">
+                            @Html.HiddenFor(d => d.InfantAccountId)
                             <div>
                                 @Html.LabelFor(d => d.InfantName)
                                 @Html.TextBoxFor(d => d.InfantName, "", new { @class = "form-control" })
@@ -55,13 +56,13 @@
                                 @Html.RadioButtonFor(d => d.InfantGender, "Femenino")<br />
                                 @Html.ValidationMessageFor(d => d.InfantGender, null, new { @class = "text-danger" })
                             </div>
-                            
+
                             <div class="mt-4" style="text-align:center">
                                 <input type="submit" value="Guardar" class="btn btn-primary" />
                             </div>
                         </div>
                     </div>
-                } 
+                }
                 <div>
                     @Html.ActionLink("Back to List", "Index")
                 </div>

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ParentalControl.Web.Mvc.Models.InfantAccountModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lista de Hijos";
 }
 
 <!DOCTYPE html>
@@ -37,12 +37,12 @@
                         @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
                     </div>
                 </div>
+                <div class="row mt-4">
+                    <a href="@Url.Action("AddInfantAccount", "InfantAccount")" class="btn btn-primary">Agregar Hijo</a>
+                </div>
                 @if (Model.Count() > 0)
                 {
                     <div class="info-Section">
-                        <p>
-                            @Html.ActionLink("Añadir Hijo", "AddInfantAccount")
-                        </p>
                         <div>
                             <h2 id="sectionTitle">Hijos</h2>
                             <hr />
@@ -50,33 +50,37 @@
                                 <table id="table-Devices" class="table">
                                     @foreach (var item in Model)
                                     {
-
-
                                         <tr>
-                                            @if (item.InfantGender=="Masculino") 
-                                            { 
+                                            @if (item.InfantGender == "Masculino")
+                                            {
                                                 <td>
                                                     <img class="img-responsive text-center" src="~/Content/Images/hijo 64.png">
                                                 </td>
                                             }
-                                            else 
+                                            else
                                             {
                                                 <td>
                                                     <img src="~/Content/Images/nina_64.png">
                                                 </td>
                                             }
-                                            
+
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.InfantName)
                                             </td>
                                             <td>
-                                                <img src="~/Content/Images/editar 32.png">
+                                                <a>                                                    
+                                                    <img onclick="@Html.ActionLink("InfantAccount", "EditInfantAccount", new { infantAccountId = item.InfantAccountId })" src="~/Content/Images/editar 32.png">
+                                                </a>
                                             </td>
                                             <td>
-                                                <img src="~/Content/Images/eliminar 32.png">
+                                                <a href="@Html.ActionLink("DeleteInfantAccount", "InfantAccount", new { infantAccountId = item.InfantAccountId})">
+                                                    <img src="~/Content/Images/eliminar 32.png">
+                                                </a>                                                
                                             </td>
                                             <td>
-                                                <img src="~/Content/Images/flecha 32.png">
+                                                <a href="@Html.ActionLink("RulesInfantAccount", "InfantAccount", new { infantAccountId = item.InfantAccountId})">
+                                                    <img src="~/Content/Images/flecha 32.png">
+                                                </a>                                                
                                             </td>
                                         </tr>
                                     }
@@ -92,7 +96,7 @@
                         <hr />
                         <div id="sectionTable">
                             <div class="noData">
-                                <h3>Aún no has creado horarios</h3>
+                                <h3>Aún no se crean cuentas de infantes</h3>
                             </div>
                         </div>
                     </div>

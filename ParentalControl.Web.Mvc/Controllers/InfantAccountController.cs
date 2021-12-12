@@ -40,49 +40,121 @@ namespace ParentalControl.Web.Mvc.Controllers
                 return View();
             }
         }
-
-        public ActionResult Create()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddInfantAccount()
         {
             var parent = this.GetCurrentUserInfo();
             return View();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="infantAccountModel"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Create(ScheduleModel scheduleModel)
+        public ActionResult AddInfantAccount(InfantAccountModel infantAccountModel)
         {
-            var creationDate = DateTime.Now;
-            var parent = this.GetCurrentUserInfo();
-            if (scheduleModel != null)
+            try
             {
-                if (ModelState.IsValid)
+                var creationDate = DateTime.Now;
+                var parent = this.GetCurrentUserInfo();
+                if (infantAccountModel != null)
                 {
-                    if (string.IsNullOrEmpty(scheduleModel.ScheduleStartTime.ToString())
-                       || string.IsNullOrEmpty(scheduleModel.ScheduleEndTime.ToString()))
-                    {
-                        return View();
-                    }
-                    else
+                    if (ModelState.IsValid)
                     {
                         using (var db = new ParentalControlDBEntities())
                         {
-                            Schedule scheduleCreate = new Schedule();
-                            scheduleCreate.ScheduleStartTime = scheduleModel.ScheduleStartTime;
-                            scheduleCreate.ScheduleEndTime = scheduleModel.ScheduleEndTime;
-                            scheduleCreate.ScheduleCreationDate = creationDate;
-                            scheduleCreate.ParentId = parent.Id;
-                            db.Schedule.Add(scheduleCreate);
+                            InfantAccount infantAccount = new InfantAccount();
+                            infantAccount.InfantName = infantAccountModel.InfantName;
+                            infantAccount.InfantGender = infantAccountModel.InfantGender;
+                            infantAccount.InfantCreationDate = creationDate;
+                            infantAccount.ParentId = parent.Id;
+                            db.InfantAccount.Add(infantAccount);
                             db.SaveChanges();
                         }
-                        Response.Write("<script>return alert('¡Horario Añadido!');</script>");
-                        return View();
+                        Response.Write("<script>return alert('¡Hijo Añadido!');</script>");
+                        return Redirect("Index");
                     }
-                    return RedirectToAction("Index");
+                    else
+                    {
+                        return View(infantAccountModel);
+                    }
                 }
-                else
+                return View();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult EditInfantAccount(int? infantAccountId)
+        {
+            if (infantAccountId != null)
+            {
+                try
                 {
-                    return View();
+                    InfantAccount infantAccount = new InfantAccount();
+                    var parent = this.GetCurrentUserInfo();
+
+                    using (var db = new ParentalControlDBEntities())
+                    {
+                        infantAccount = db.InfantAccount.Find(infantAccountId);
+                    }
+                    ViewBag.list = infantAccount;
+                    return View(infantAccount);
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("Index", "News");
                 }
             }
             return View();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="infantAccountModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult EditInfantAccount(InfantAccountModel infantAccountModel)
+        {
+            try
+            {
+                var parent = this.GetCurrentUserInfo();
+                if (infantAccountModel != null)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        using (var db = new ParentalControlDBEntities())
+                        {
+                            InfantAccount infantAccount = db.InfantAccount.Find(infantAccountModel.InfantAccountId);
+                            infantAccount.InfantName = infantAccountModel.InfantName;
+                            infantAccount.InfantGender = infantAccountModel.InfantGender;
+                            db.Entry(infantAccount).State=System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        Response.Write("<script>return alert('¡Hijo Añadido!');</script>");
+                        return Redirect("Index");
+                    }
+                    else
+                    {
+                        return View(infantAccountModel);
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
