@@ -19,8 +19,8 @@
         <div class="rowMenu">
             <div class="vertical-menu">
                 <a href='@Url.Action("Index", "News")' id="logoImgMenu"><img src="~/Content/Images/icono-menu.png"></a>
-                <a href="@Url.Action("Index", "InfantAccount")"><img src="~/Content/Images/children.png"></a>
-                <a href="@Url.Action("Index", "InfantAccount")">Cuentas Infantiles</a>
+                <a href='@Url.Action("Index", "InfantAccount")'><img src="~/Content/Images/children.png"></a>
+                <a href='@Url.Action("Index", "InfantAccount")'>Cuentas Infantiles</a>
                 <a href='@Url.Action("Index", "Device")'><img src="~/Content/Images/devices.png"></a>
                 <a href='@Url.Action("Index", "Device")'>Dispositivos</a>
                 <a href='@Url.Action("Index", "Schedule")'><img src="~/Content/Images/calendario.png"></a>
@@ -68,17 +68,17 @@
                                                 @Html.DisplayFor(modelItem => item.InfantName)
                                             </td>
                                             <td>
-                                                <a>                                                    
-                                                    <img onclick="@Html.ActionLink("InfantAccount", "EditInfantAccount", new { infantAccountId = item.InfantAccountId })" src="~/Content/Images/editar 32.png">
+                                                <a href='@Url.Action("EditInfantAccount", "InfantAccount", new { infantAccountId = item.InfantAccountId })'>                                                    
+                                                    <img src="~/Content/Images/editar 32.png">
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="@Html.ActionLink("DeleteInfantAccount", "InfantAccount", new { infantAccountId = item.InfantAccountId})">
+                                                <a href='@Url.Action("DeleteInfantAccount", "InfantAccount", new { infantAccountId = item.InfantAccountId })'>
                                                     <img src="~/Content/Images/eliminar 32.png">
                                                 </a>                                                
                                             </td>
                                             <td>
-                                                <a href="@Html.ActionLink("RulesInfantAccount", "InfantAccount", new { infantAccountId = item.InfantAccountId})">
+                                                <a href='@Html.ActionLink("RulesInfantAccount", "InfantAccount", new { infantAccountId = item.InfantAccountId})'>
                                                     <img src="~/Content/Images/flecha 32.png">
                                                 </a>                                                
                                             </td>

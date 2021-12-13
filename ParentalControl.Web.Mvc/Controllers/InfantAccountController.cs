@@ -1,16 +1,21 @@
 ﻿using ParentalControl.Web.Mvc.Data;
+using ParentalControl.Web.Mvc.Filters;
 using ParentalControl.Web.Mvc.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows;
+using System.Windows.Forms;
 
 namespace ParentalControl.Web.Mvc.Controllers
 {
     public class InfantAccountController : BaseController
     {
         //List Schedule
+        [AuthorizeParent]
         public ActionResult Index()
         {
             try
@@ -44,6 +49,7 @@ namespace ParentalControl.Web.Mvc.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
+        [AuthorizeParent]
         public ActionResult AddInfantAccount()
         {
             var parent = this.GetCurrentUserInfo();
@@ -54,6 +60,7 @@ namespace ParentalControl.Web.Mvc.Controllers
         /// </summary>
         /// <param name="infantAccountModel"></param>
         /// <returns></returns>
+        [AuthorizeParent]
         [HttpPost]
         public ActionResult AddInfantAccount(InfantAccountModel infantAccountModel)
         {
@@ -95,6 +102,7 @@ namespace ParentalControl.Web.Mvc.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
+        [AuthorizeParent]
         public ActionResult EditInfantAccount(int? infantAccountId)
         {
             if (infantAccountId != null)
@@ -102,27 +110,38 @@ namespace ParentalControl.Web.Mvc.Controllers
                 try
                 {
                     InfantAccount infantAccount = new InfantAccount();
+                    InfantAccountModel infantAccountModel = new InfantAccountModel();
                     var parent = this.GetCurrentUserInfo();
 
                     using (var db = new ParentalControlDBEntities())
                     {
                         infantAccount = db.InfantAccount.Find(infantAccountId);
                     }
-                    ViewBag.list = infantAccount;
-                    return View(infantAccount);
+                    infantAccountModel.InfantAccountId = infantAccount.InfantAccountId;
+                    infantAccountModel.InfantName = infantAccount.InfantName;
+                    infantAccountModel.InfantGender = infantAccount.InfantGender;
+                    infantAccountModel.InfantCreationDate = infantAccount.InfantCreationDate;
+                    infantAccountModel.ParentId = parent.Id;
+                    ViewBag.list = infantAccountModel;
+                    return View(infantAccountModel);
                 }
                 catch (Exception ex)
                 {
                     return RedirectToAction("Index", "News");
                 }
             }
-            return View();
+            else
+            {
+                return View();
+            }
+            
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="infantAccountModel"></param>
         /// <returns></returns>
+        [AuthorizeParent]
         [HttpPost]
         public ActionResult EditInfantAccount(InfantAccountModel infantAccountModel)
         {
@@ -156,5 +175,30 @@ namespace ParentalControl.Web.Mvc.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="infantAccountId"></param>
+        /// <returns></returns>
+        [AuthorizeParent]
+        [HttpGet]
+        public ActionResult DeleteInfantAccount(int? infantAccountId)
+        {
+            if (System.Windows.Forms.MessageBox.Show("¿Seguro que desea eliminar la cuenta de infante?", "Eliminar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+            { 
+                InfantAccount infantAccount = new InfantAccount();
+                using (var db = new ParentalControlDBEntities())
+                {
+                    infantAccount = db.InfantAccount.Find(infantAccountId);
+                    db.InfantAccount.Remove(infantAccount);
+                    db.SaveChanges();
+                }  
+                
+            }
+            return Redirect("Index");
+        }
+
     }
 }

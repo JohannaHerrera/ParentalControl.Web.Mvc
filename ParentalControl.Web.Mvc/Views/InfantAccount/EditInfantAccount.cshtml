@@ -40,21 +40,29 @@
                 </div>
                 @using (Html.BeginForm("EditInfantAccount", "InfantAccount", FormMethod.Post))
                 {
+                    @Html.HiddenFor(infant => infant.InfantAccountId)
+                    @Html.HiddenFor(infant => infant.ParentId)
+                    <div id="deviceName">
+                        <a href='@Url.Action("Index", "InfantAccount")'><img src="~/Content/Images/flecha-izquierda.png"></a>
+                        <div id="sectionTitle">
+                            @Html.TextBoxFor(infant => infant.InfantName, (object)new { @disabled = true, @id = "infantAccountName" })
+                        </div>
+                        <hr />
+                    </div>
                     <div class="row">
                         <div class="col-12">
-                            @Html.HiddenFor(d => d.InfantAccountId)
                             <div>
-                                @Html.LabelFor(d => d.InfantName)
-                                @Html.TextBoxFor(d => d.InfantName, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(d => d.InfantName, null, new { @class = "text-danger" })
+                                @Html.LabelFor(infant => infant.InfantName)
+                                @Html.TextBoxFor(infant => infant.InfantName, "", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(infant => infant.InfantName, null, new { @class = "text-danger" })
                             </div>
                             <div>
                                 @Html.Label("Seleccione el género:")<br />
                                 @Html.Label("Masculino:")
-                                @Html.RadioButtonFor(d => d.InfantGender, "Masculino")<br />
+                                @Html.RadioButtonFor(infant => infant.InfantGender, "Masculino")<br />
                                 @Html.Label("Femenino:")
-                                @Html.RadioButtonFor(d => d.InfantGender, "Femenino")<br />
-                                @Html.ValidationMessageFor(d => d.InfantGender, null, new { @class = "text-danger" })
+                                @Html.RadioButtonFor(infant => infant.InfantGender, "Femenino")<br />
+                                @Html.ValidationMessageFor(infant => infant.InfantGender, null, new { @class = "text-danger" })
                             </div>
 
                             <div class="mt-4" style="text-align:center">
@@ -71,3 +79,16 @@
     </div>
 </body>
 </html>
+
+<script type="text/javascript">
+    function Habilitar() {
+        var element = document.getElementById('infantAccountName');
+
+        if (element.disabled == true) {
+            element.disabled = false;
+        }
+        else {
+            element.disabled = true;
+        }
+    }
+</script>
