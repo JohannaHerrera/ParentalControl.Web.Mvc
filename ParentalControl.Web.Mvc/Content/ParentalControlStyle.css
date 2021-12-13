@@ -379,6 +379,121 @@
     padding-top: 10px;
 }
 
+.deviceQuestionTitle{
+    margin-top: 50px;
+    margin-left: 40px;
+}
+
+.deviceDeleteInfo {
+    margin-top: 60px;
+    margin-left: 38%;
+    margin-right: 38%;
+    font-size: 16px;
+    font-family: Arial;
+    font-weight: bold;
+    border: solid 3px;
+    border-color: darkblue;
+    border-radius: 10px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 11px;
+}
+
+.deviceDeleteInfo img{
+    margin-right: 30px;   
+}
+
+
+.btnDeleteDevice {
+    padding-top: 70px;
+    text-align: center;
+}
+
+.btnNoDeleteDevice {
+    padding-top: 35px;
+    text-align: center;
+}
+
+#table-Notifications {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-top: 25px;
+    font-family: Arial !important;
+    font-size: 12px;
+    width: 80%;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    #table-Notifications p {
+        font-family: Arial;
+        font-size: 14px;
+        vertical-align: middle;
+        margin-top: auto;
+        margin-bottom: auto;
+        text-align:justify;
+        margin-left: 10px;
+    }
+
+    #table-Notifications h6 {
+        font-family: Arial;
+        font-weight: bold;
+        vertical-align: middle;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+.btn-Aprobar {
+    color: white;
+    background-color: #10A410;
+    border-color: #10A410;
+    border-radius: 8px;
+    height: 35px;
+    width: 125px;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.btn-Desaprobar {
+    color: white;
+    background-color: red;
+    border-color: red;
+    border-radius: 8px;
+    height: 35px;
+    width: 125px;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.btn-Gray {
+    color: white;
+    background-color: #4E4E4E;
+    border-color: #4E4E4E;
+    border-radius: 8px;
+    height: 35px;
+    width: 125px;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.btn-SinRespuesta {
+    color: white;
+    background-color: #ED6D0F;
+    border-color: #ED6D0F;
+    border-radius: 8px;
+    height: 35px;
+    width: 125px;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 
 
 
@@ -429,13 +544,13 @@
         width: 350px;
     }
 
-    .info-Section{
+    .info-Section {
         padding-top: 50px;
     }
 
     .vertical-menu {
         width: 100px;
-        height: auto !important;
+        height: 125% !important;
     }
 
     .vertical-menu a {
@@ -471,5 +586,43 @@
 
     .btnSaveDevicePhone {
         padding-bottom: 50px;
+    }
+
+    .deviceQuestionTitle {
+        margin-top: 10px;
+        margin-left: 40px;
+    }
+
+    .deviceDeleteInfo {
+        margin-top: 60px;
+        margin-left: 10%;
+        margin-right: 10%;
+        padding-top: 10px;
+        padding-bottom: 11px;
+    }
+
+    #table-Notifications {
+        margin-left: -35px;
+    }
+
+    .btn-Aprobar {
+        width: 100%;
+        font-size: 11px;
+    }
+
+    .btn-Desaprobar {
+        width: 100%;
+        font-size: 11px;
+    }
+
+    .btn-Gray {
+        width: 100%;
+        font-size: 11px;
+    }
+
+    .btn-SinRespuesta {
+        width: 100%;
+        font-size: 11px;
+        line-height: 10px;
     }
 }

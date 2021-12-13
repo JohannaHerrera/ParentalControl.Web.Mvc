@@ -40,17 +40,17 @@ namespace ParentalControl.Web.Mvc.Controllers
                     foreach (var device in devicePCList)
                     {
                         var windowsAccountList = (from windowsAccount in db.WindowsAccount
-                                               join devicePc in db.DevicePC
-                                               on windowsAccount.DevicePCId
-                                               equals devicePc.DevicePCId
-                                               where windowsAccount.DevicePCId == device.DevicePCId
-                                               select new WindowsAccountModel
-                                               {
-                                                   WindowsAccountId = windowsAccount.WindowsAccountId,
-                                                   WindowsAccountName = windowsAccount.WindowsAccountName,
-                                                   DevicePCId = windowsAccount.DevicePCId,
-                                                   InfantAccountId = windowsAccount.InfantAccountId
-                                               }).ToList();
+                                                 join devicePc in db.DevicePC
+                                                 on windowsAccount.DevicePCId
+                                                 equals devicePc.DevicePCId
+                                                 where windowsAccount.DevicePCId == device.DevicePCId
+                                                 select new WindowsAccountModel
+                                                 {
+                                                     WindowsAccountId = windowsAccount.WindowsAccountId,
+                                                     WindowsAccountName = windowsAccount.WindowsAccountName,
+                                                     DevicePCId = windowsAccount.DevicePCId,
+                                                     InfantAccountId = windowsAccount.InfantAccountId
+                                                 }).ToList();
 
                         device.deviceProtected = false;
 
@@ -367,6 +367,72 @@ namespace ParentalControl.Web.Mvc.Controllers
         }
 
         [AuthorizeParent]
+        public ActionResult DeleteDevicePC(int deviceId)
+        {
+            try
+            {
+                DevicePCModel devicePCModel = new DevicePCModel();
+                var parent = this.GetCurrentUserInfo();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    devicePCModel = (from device in db.DevicePC
+                                    where device.DevicePCId == deviceId
+                                    && device.ParentId == parent.Id
+                                    select new DevicePCModel
+                                    {
+                                        DevicePCId = device.DevicePCId,
+                                        DevicePCName = device.DevicePCName,
+                                        ParentId = device.ParentId
+                                    }).FirstOrDefault();
+                }
+
+                return View(devicePCModel);
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+        [AuthorizeParent]
+        [HttpPost]
+        public ActionResult DeleteDevicePC(DevicePCModel devicePCModel)
+        {
+            try
+            {
+                var parent = this.GetCurrentUserInfo();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    var devicePC = (from device in db.DevicePC
+                                    where device.DevicePCId == devicePCModel.DevicePCId
+                                    && device.ParentId == devicePCModel.ParentId
+                                    select device).FirstOrDefault();
+
+                    if(devicePC != null)
+                    {
+                        var windowsAccounts = db.WindowsAccount.Where(x => x.DevicePCId == devicePC.DevicePCId);
+                        var apps = db.App.Where(x => x.DevicePCId == devicePC.DevicePCId);
+                        var appsDevice = db.AppDevice.Where(x => x.DevicePCId == devicePC.DevicePCId);
+
+                        db.WindowsAccount.RemoveRange(windowsAccounts);
+                        db.App.RemoveRange(apps);
+                        db.AppDevice.RemoveRange(appsDevice);
+                        db.DevicePC.Remove(devicePC);
+                        db.SaveChanges();
+                    }
+                }
+
+                return RedirectToAction("Index", "Device");
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+        [AuthorizeParent]
         public ActionResult DevicePhoneDetails(int deviceId)
         {
             try
@@ -579,6 +645,72 @@ namespace ParentalControl.Web.Mvc.Controllers
                 }
 
                 return RedirectToAction("DevicePhoneDetails", "Device", new { deviceId = devicePhoneModel.DevicePhoneId });
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+        [AuthorizeParent]
+        public ActionResult DeleteDevicePhone(int deviceId)
+        {
+            try
+            {
+                DevicePhoneModel devicePhoneModel = new DevicePhoneModel();
+                var parent = this.GetCurrentUserInfo();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    devicePhoneModel = (from device in db.DevicePhone
+                                       where device.DevicePhoneId == deviceId
+                                       && device.ParentId == parent.Id
+                                       select new DevicePhoneModel
+                                       {
+                                           DevicePhoneId = device.DevicePhoneId,
+                                           DevicePhoneName = device.DevicePhoneName,
+                                           ParentId = device.ParentId
+                                       }).FirstOrDefault();
+                }
+
+                return View(devicePhoneModel);
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+        [AuthorizeParent]
+        [HttpPost]
+        public ActionResult DeleteDevicePhone(DevicePhoneModel devicePhoneModel)
+        {
+            try
+            {
+                var parent = this.GetCurrentUserInfo();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    var devicePhone = (from device in db.DevicePhone
+                                      where device.DevicePhoneId == devicePhoneModel.DevicePhoneId
+                                      && device.ParentId == devicePhoneModel.ParentId
+                                      select device).FirstOrDefault();
+                                      
+                    if (devicePhone != null)
+                    {
+                        var deviceUseSchedules = db.DevicePhoneUse.Where(x => x.DevicePhoneId == devicePhone.DevicePhoneId);
+                        var apps = db.App.Where(x => x.DevicePhoneId == devicePhone.DevicePhoneId);
+                        var appsDevice = db.AppDevice.Where(x => x.DevicePhoneId == devicePhone.DevicePhoneId);
+
+                        db.DevicePhoneUse.RemoveRange(deviceUseSchedules);
+                        db.App.RemoveRange(apps);
+                        db.AppDevice.RemoveRange(appsDevice);
+                        db.DevicePhone.Remove(devicePhone);
+                        db.SaveChanges();
+                    }
+                }
+
+                return RedirectToAction("Index", "Device");
             }
             catch (Exception ex)
             {
