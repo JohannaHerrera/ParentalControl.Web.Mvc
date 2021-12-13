@@ -1,4 +1,5 @@
-﻿using ParentalControl.Web.Mvc.Data;
+﻿using ParentalControl.Web.Mvc.Business.AppConstants;
+using ParentalControl.Web.Mvc.Data;
 using ParentalControl.Web.Mvc.Filters;
 using ParentalControl.Web.Mvc.Models;
 using System;
@@ -200,5 +201,240 @@ namespace ParentalControl.Web.Mvc.Controllers
             return Redirect("Index");
         }
 
+        [AuthorizeParent]
+        public ActionResult RulesInfantAccount(int infantAccountId)
+        {
+            try
+            {
+                InfantAccountRules infantAccountRulesModel = new InfantAccountRules();
+                List<AppModel> appModelList = new List<AppModel>();
+                List<WebConfigurationModel> webConfigurationModelList = new List<WebConfigurationModel>();
+                var parent = this.GetCurrentUserInfo();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    // ************************* CONFIGURACIÓN WEB *************************
+
+                    var webConfiguration = (from webConfig in db.WebConfiguration
+                                            where webConfig.InfantAccountId == infantAccountId
+                                            select webConfig).ToList();
+
+                    foreach (var web in webConfiguration)
+                    {
+                        WebConfigurationModel webConfigurationModel = new WebConfigurationModel();
+                        var webCategory = db.WebCategory.Where(x => x.CategoryId == web.CategoryId).FirstOrDefault();
+                        webConfigurationModel.CategoryName = webCategory.CategoryName;
+                        webConfigurationModel.InfantAccountId = web.InfantAccountId;
+                        webConfigurationModel.WebConfigurationId = web.WebConfigurationId;
+                        webConfigurationModel.WebConfigurationAccess = web.WebConfigurationAccess;
+                        webConfigurationModelList.Add(webConfigurationModel);
+                    }
+
+
+                    // ************************* CONFIGURACIÓN DE APLICACIONES *************************
+
+                    var appConfig = (from app in db.App
+                                    where app.InfantAccountId == infantAccountId
+                                    select app).ToList();                    
+
+                    foreach(var app in appConfig)
+                    {
+                        AppModel appModel = new AppModel();
+
+                        if (app.DevicePCId != null)
+                        {
+                            var device = db.DevicePC.Where(x => x.DevicePCId == app.DevicePCId).FirstOrDefault();
+                            appModel.DeviceName = device.DevicePCName;
+                        }
+                        else
+                        {
+                            var device = db.DevicePhone.Where(x => x.DevicePhoneId == app.DevicePhoneId).FirstOrDefault();
+                            appModel.DeviceName = device.DevicePhoneName;
+                        }
+
+                        appModel.AppId = app.AppId;
+                        appModel.AppName = app.AppName;
+                        appModel.AppAccessPermission = app.AppAccessPermission;
+                        appModel.ScheduleId = app.ScheduleId;
+                        appModel.InfantAccountId = app.InfantAccountId;
+
+                        appModelList.Add(appModel);
+                    }
+
+
+                    // ************************* CONFIGURACIÓN DE USO DEL DISPOSITIVO *************************
+
+                    var deviceUseConfig = (from deviceUse in db.DeviceUse
+                                           where deviceUse.InfantAccountId == infantAccountId
+                                           select deviceUse).ToList();
+
+
+                    // ************************* HISTORIAL DE ACTIVIDAD *************************
+
+                    var activityList = (from activity in db.Activity
+                                        where activity.InfantAccountId == infantAccountId
+                                        select activity).ToList();
+
+
+                    // ************************* MODELO INFANT ACCOUNT RULES *************************
+
+                    var infantAc = (from infant in db.InfantAccount
+                                    where infant.InfantAccountId == infantAccountId
+                                    select infant).FirstOrDefault();
+
+                    infantAccountRulesModel.InfantAccountId = infantAccountId;
+                    infantAccountRulesModel.InfantName = infantAc.InfantName;
+                    infantAccountRulesModel.AppList = appModelList;
+                    infantAccountRulesModel.WebConfigurationList = webConfigurationModelList;
+                    infantAccountRulesModel.DeviceUseList = deviceUseConfig;
+                    infantAccountRulesModel.ActivityList = activityList;
+
+
+                    // ************************* COMBOBOX HORARIOS *************************
+
+                    List<ScheduleOptionModel> scheduleOptionModelList = new List<ScheduleOptionModel>();
+
+                    var scheduleModelList = (from schedule in db.Schedule
+                                             where schedule.ParentId == parent.Id
+                                             select new ScheduleOptionModel
+                                             {
+                                                 ScheduleId = schedule.ScheduleId,
+                                                 ScheduleStartTime = schedule.ScheduleStartTime,
+                                                 ScheduleEndTime = schedule.ScheduleEndTime
+                                             }).ToList();
+
+                    foreach (var schedule in scheduleModelList)
+                    {
+                        schedule.ScheduleTime = $"{schedule.ScheduleStartTime.ToString("HH:mm")} - {schedule.ScheduleEndTime.ToString("HH:mm")}";
+                    }
+
+                    ScheduleOptionModel scheduleOp = new ScheduleOptionModel();
+                    scheduleOp.ScheduleId = 0;
+                    scheduleOp.ScheduleTime = "Ninguno";
+
+                    scheduleOptionModelList.Add(scheduleOp);
+                    scheduleOptionModelList.AddRange(scheduleModelList);
+
+                    var scheduleList = new SelectList(scheduleOptionModelList, "ScheduleId", "ScheduleTime");
+                    ViewData["scheduleList"] = scheduleList;
+                }
+                
+                return View(infantAccountRulesModel);
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+
+        [AuthorizeParent]
+        [HttpPost]
+        public ActionResult RulesInfantAccount(int infantAccountId, string webConfig, string appAccessConfig, string appScheduleConfig, string deviceConfig)
+        {
+            try
+            {
+                char delimitador = ',';
+                List<string> webConfigList = webConfig.Split(delimitador).ToList();
+                List<string> appAcessConfigList = appAccessConfig.Split(delimitador).ToList();
+                List<string> appScheduleConfigList = appScheduleConfig.Split(delimitador).ToList();
+                List<string> deviceConfigList = deviceConfig.Split(delimitador).ToList();
+
+                InfantAccountRules infantAccountRulesModel = new InfantAccountRules();
+                List<AppModel> appModelList = new List<AppModel>();
+                List<WebConfigurationModel> webConfigurationModelList = new List<WebConfigurationModel>();
+                AppConstants appConstants = new AppConstants();
+                int cont = 0;
+
+                var parent = this.GetCurrentUserInfo();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    // ************************* CONFIGURACIÓN WEB *************************
+
+                    var webConfiguration = (from webConf in db.WebConfiguration
+                                            where webConf.InfantAccountId == infantAccountId
+                                            select webConf).ToList();
+
+                    cont = 0;
+                    foreach (var web in webConfiguration)
+                    {
+                        if (webConfigList[cont] == "0")
+                        {
+                            web.WebConfigurationAccess = appConstants.Access;
+                        }
+                        else
+                        {
+                            web.WebConfigurationAccess = appConstants.NoAccess;
+                        }
+
+                        db.SaveChanges();
+                        cont++;                       
+                    }
+
+
+                    // ************************* CONFIGURACIÓN DE APLICACIONES *************************
+
+                    var appConfig = (from app in db.App
+                                     where app.InfantAccountId == infantAccountId
+                                     select app).ToList();
+
+                    cont = 0;
+                    foreach (var app in appConfig)
+                    {
+                        if (appScheduleConfigList[cont] == "0")
+                        {
+                            if (appAcessConfigList[cont] == "0")
+                            {
+                                app.AppAccessPermission = appConstants.Access;
+                            }
+                            else
+                            {
+                                app.AppAccessPermission = appConstants.NoAccess;
+                            }
+
+                            app.ScheduleId = null;
+                        }
+                        else
+                        {
+                            app.AppAccessPermission = appConstants.Access;
+                            app.ScheduleId = Convert.ToInt32(appScheduleConfigList[cont]);
+                        }
+
+                        db.SaveChanges();
+                        cont++;
+                    }
+
+
+                    // ************************* CONFIGURACIÓN DE USO DEL DISPOSITIVO *************************
+                    var deviceUseConfig = (from deviceUse in db.DeviceUse
+                                           where deviceUse.InfantAccountId == infantAccountId
+                                           select deviceUse).ToList();
+
+                    cont = 0;
+                    foreach (var deviceUse in deviceUseConfig)
+                    {
+                        if (deviceConfigList[cont] == "0")
+                        {
+                            deviceUse.ScheduleId = null;
+                        }
+                        else
+                        {
+                            deviceUse.ScheduleId = Convert.ToInt32(deviceConfigList[cont]);
+                        }
+
+                        db.SaveChanges();
+                        cont++;
+                    }
+
+                }
+
+                return RedirectToAction("RulesInfantAccount", "InfantAccount", new { infantAccountId = infantAccountId });
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
     }
 }

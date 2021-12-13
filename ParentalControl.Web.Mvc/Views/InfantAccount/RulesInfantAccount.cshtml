@@ -1,0 +1,395 @@
+﻿@model ParentalControl.Web.Mvc.Models.InfantAccountRules
+
+@{
+    ViewBag.Title = "RulesInfantAccount";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKN - Control Parental</title>
+    @Styles.Render("~/Content/ParentalControlStyle.css")
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="containerDashboard">
+        <div class="rowMenu">
+            <div class="vertical-menu">
+                <a href='@Url.Action("Index", "News")' id="logoImgMenu"><img src="~/Content/Images/icono-menu.png"></a>
+                <a href='@Url.Action("Index", "InfantAccount")'><img src="~/Content/Images/children.png"></a>
+                <a href="@Url.Action("Index", "InfantAccount")">Cuentas Infantiles</a>
+                <a href='@Url.Action("Index", "Device")'><img src="~/Content/Images/devices.png"></a>
+                <a href='@Url.Action("Index", "Device")'>Dispositivos</a>
+                <a href='@Url.Action("Index", "Schedule")'><img src="~/Content/Images/calendario.png"></a>
+                <a href='@Url.Action("Index", "Schedule")'>Horarios</a>
+                <a href='@Url.Action("Index", "Notification")'><img src="~/Content/Images/notificaciones.png"></a>
+                <a href='@Url.Action("Index", "Notification")'>Notificaciones</a>
+            </div>
+            <div class="info-Content">
+                <div id="menu-Parent">
+                    <div class="button-menu-Parent">
+                        @Html.ActionLink("Cerrar Sesión", "Login", "Account", new { area = "" }, new { @class = "button-parent" })
+                    </div>
+                    <div class="button-menu-Parent">
+                        @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
+                    </div>
+                </div>
+                <div class="info-Section">
+                    @using (Html.BeginForm("RulesInfantAccount", "InfantAccount", FormMethod.Post, new { @id = "frmSaveRulesChanges" }))
+                    {
+                        @Html.HiddenFor(m => m.InfantAccountId)
+                        @Html.Hidden("webConfig", "");
+                        @Html.Hidden("appAccessConfig", "");
+                        @Html.Hidden("appScheduleConfig", "");
+                        @Html.Hidden("deviceConfig", "");
+
+                        <div>
+                            <div id="infantName-Rules">
+                                <a href='@Url.Action("Index", "InfantAccount")'><img src="~/Content/Images/flecha-izquierda.png"></a>
+                                <div id="sectionTitle">
+                                    <h2 id="sectionTitle">@Model.InfantName</h2>
+                                </div>
+                            </div>
+                            <hr />
+                            <div id="sectionTable">
+                                <div class="container-Rules">
+                                    <div class="panel-group" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" id="Title-Rules">Bloqueo Web</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse1" class="panel-collapse collapse in">
+                                                <table class="table" id="table-Web-Config">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Categoría</th>
+                                                            <th scope="col">Desbloquear/Bloquear</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.WebConfigurationList)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.CategoryName</td>
+
+                                                                @if (!(bool)item.WebConfigurationAccess)
+                                                                {
+                                                                    <td>
+                                                                        <label class="switch">
+                                                                            <input type="checkbox" class="checkbox-Web">
+                                                                            <span class="slider round"></span>
+                                                                        </label>
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+                                                                        <label class="switch">
+                                                                            <input type="checkbox" class="checkbox-Web" checked>
+                                                                            <span class="slider round"></span>
+                                                                        </label>
+                                                                    </td>
+                                                                }
+
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" id="Title-Rules">Bloqueo de Aplicaciones</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse2" class="panel-collapse collapse">
+                                                <table class="table" id="table-Apps-Rules">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Aplicación</th>
+                                                            <th scope="col">Dispositivo</th>
+                                                            <th scope="col">Desbloquear/Bloquear</th>
+                                                            <th scope="col">Seleccionar Horario</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tbody>
+                                                        @foreach (var item in Model.AppList)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.AppName</td>
+
+                                                                <td>@item.DeviceName</td>
+
+                                                                @if (!(bool)item.AppAccessPermission)
+                                                                {
+                                                                    <td>
+                                                                        <label class="switch">
+                                                                            <input type="checkbox" class="checkbox-App">
+                                                                            <span class="slider round"></span>
+                                                                        </label>
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+                                                                        <label class="switch">
+                                                                            <input type="checkbox" class="checkbox-App" checked>
+                                                                            <span class="slider round"></span>
+                                                                        </label>
+                                                                    </td>
+                                                                }
+
+                                                                @if (item.ScheduleId == null)
+                                                                {
+                                                                    <td>
+                                                                        @Html.DropDownList("scheduleList", ViewData["scheduleList"] as SelectList, new { onchange = "SelectSchedule()", @class = "scheduleAppList" })
+                                                                    </td>
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+                                                                        <select id="scheduleList" name="scheduleList" onchange="SelectSchedule()" class="scheduleAppList">
+                                                                            @foreach (SelectListItem option in ViewData["scheduleList"] as SelectList)
+                                                                            {
+                                                                                <option value="@option.Value" @(option.Value == item.ScheduleId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                                            }
+                                                                        </select>
+                                                                    </td>
+
+                                                                }
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" id="Title-Rules">Tiempo de Uso del Dispositivo</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse3" class="panel-collapse collapse">
+                                                <table class="table" id="table-DeviceUse-Config">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Día</th>
+                                                            <th scope="col">Seleccionar Horario</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.DeviceUseList)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.DeviceUseDay</td>
+
+                                                                @if (item.ScheduleId == null)
+                                                                {
+                                                                    <td>
+                                                                        @Html.DropDownList("scheduleList", ViewData["scheduleList"] as SelectList, new { @class = "scheduleDeviceList" })
+                                                                    </td>
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+                                                                        <select id="scheduleList" name="scheduleList" class="scheduleDeviceList">
+                                                                            @foreach (SelectListItem option in ViewData["scheduleList"] as SelectList)
+                                                                            {
+                                                                                <option value="@option.Value" @(option.Value == item.ScheduleId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                                            }
+                                                                        </select>
+                                                                    </td>
+
+                                                                }
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" id="Title-Rules">Historial</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse4" class="panel-collapse collapse">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Actividad</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.ActivityList.Count() > 0)
+                                                        {
+                                                            foreach (var item in Model.ActivityList)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.ActivityDescription</td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td>Aún no existen registros de actividad.</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btnSave">
+                            <button id="btnGuardar" type="button" class="btn btn-primary" onclick="Procesar(); return false;">
+                                Guardar
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/utilities.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+    var index;
+
+    $("#table-Apps-Rules tr").click(function () {
+        index = this.rowIndex;
+
+        setTimeout(function () {
+            var checkboxList = document.getElementsByClassName('checkbox-App');
+            var checkbox = checkboxList[index - 1];
+
+            var cmbScheduleList = document.getElementsByName('scheduleList');
+            var schedule = cmbScheduleList[index - 1];
+
+            if (checkbox.checked == true) {
+                schedule.value = 0;
+            }
+            else {
+                if (schedule.value != 0) {
+                    checkbox.checked = false;
+                }
+            }
+        }, 100);      
+    });
+
+    function SelectSchedule() {
+        var checkboxList = document.getElementsByClassName('checkbox-App');
+        var checkbox = checkboxList[index - 1];
+        checkbox.checked = false;
+    }
+
+    function Procesar() {
+
+        /********************************* CONFIGURACIÓN WEB *********************************/
+        var tableWeb = document.getElementById('table-Web-Config');
+        var webCategories = [];
+
+        var checkboxList = document.getElementsByClassName('checkbox-Web');
+      
+        for (var r = 1, n = tableWeb.rows.length; r < n; r++) {
+            
+            var checkbox = checkboxList[r - 1];
+
+            if (checkbox.checked == true) {
+                webCategories.push("1");
+            }
+            else
+            {
+                webCategories.push("0");
+            }
+        }
+
+        $("#webConfig").val(webCategories);
+
+        /********************************* CONFIGURACIÓN APPS *********************************/
+
+        var dropDownList = document.getElementsByClassName('scheduleAppList');
+        var checkboxAppList = document.getElementsByClassName('checkbox-App');
+        var appAcess = [];
+        var appSchedule = [];
+        var i;
+
+        for (i = 0; i < dropDownList.length; i++) {
+            var checkbox = checkboxAppList[i];
+            var options = dropDownList[i] && dropDownList[i].options;
+            var opt;
+
+            for (var j = 0, jLen = options.length; j < jLen; j++) {
+                opt = options[j];
+
+                if (opt.selected) {
+                    /* Ningún horario */
+                    if (opt.value == 0) {
+                        if (checkbox.checked == true) {
+                            appAcess.push("1");
+                        }
+                        else {
+                            appAcess.push("0");
+                        }
+                    }
+                    else
+                    {
+                    /* Horario seleccionado */
+                        appAcess.push("0");
+                    }
+
+                    appSchedule.push(opt.value);
+                }
+            }
+        }
+
+        $("#appAccessConfig").val(appAcess);
+        $("#appScheduleConfig").val(appSchedule);
+
+        /********************************* CONFIGURACIÓN USO DEL DISPOSITIVO *********************************/
+
+        var dropDownDeviceList = document.getElementsByClassName('scheduleDeviceList');
+        var scheduleDevice = [];
+        var x;
+
+        for (x = 0; x < dropDownDeviceList.length; x++) {
+            var options = dropDownDeviceList[x] && dropDownDeviceList[x].options;
+            var opt;
+
+            for (var j = 0, jLen = options.length; j < jLen; j++) {
+                opt = options[j];
+
+                if (opt.selected) {
+                    scheduleDevice.push(opt.value);
+                }
+            }
+        }
+
+        $("#deviceConfig").val(scheduleDevice);
+
+
+
+        /*** SaveChanges ***/
+        var form = document.getElementById('frmSaveRulesChanges');
+        form.submit();
+    }
+</script>
