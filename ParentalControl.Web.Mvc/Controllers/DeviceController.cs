@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static ParentalControl.Web.Mvc.Models.Enum;
 
 namespace ParentalControl.Web.Mvc.Controllers
 {    
@@ -357,7 +358,8 @@ namespace ParentalControl.Web.Mvc.Controllers
                         db.SaveChanges();
                     }
                 }
-
+                
+                Alert("¡La información se actualizó correctamente!", NotificationType.success);
                 return RedirectToAction("DevicePcDetails", "Device", new { deviceId = devicePCModel.DevicePCId });
             }
             catch (Exception ex)
@@ -424,6 +426,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                     }
                 }
 
+                Alert("¡Dispositivo Eliminado!", NotificationType.success);
                 return RedirectToAction("Index", "Device");
             }
             catch (Exception ex)
@@ -644,6 +647,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                     }                   
                 }
 
+                Alert("¡La información se actualizó correctamente!", NotificationType.success);
                 return RedirectToAction("DevicePhoneDetails", "Device", new { deviceId = devicePhoneModel.DevicePhoneId });
             }
             catch (Exception ex)
@@ -710,6 +714,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                     }
                 }
 
+                Alert("¡Dispositivo Eliminado!", NotificationType.success);
                 return RedirectToAction("Index", "Device");
             }
             catch (Exception ex)

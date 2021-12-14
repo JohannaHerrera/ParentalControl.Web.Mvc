@@ -12,6 +12,7 @@ using Microsoft.Owin.Security;
 using ParentalControl.Web.Mvc.Data;
 using ParentalControl.Web.Mvc.Filters;
 using ParentalControl.Web.Mvc.Models;
+using static ParentalControl.Web.Mvc.Models.Enum;
 
 namespace ParentalControl.Web.Mvc.Controllers
 {
@@ -56,7 +57,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                         }
                         else
                         {
-                            Response.Write("<script>alert('Credenciales incorrectas.');</script>");
+                            Alert("Credenciales incorrectas.", NotificationType.error);
                             return View();
                         }
                     }
@@ -110,14 +111,14 @@ namespace ParentalControl.Web.Mvc.Controllers
                         }
                         else
                         {
-                            Response.Write("<script>alert('Ya existe un usuario con el mismo correo electrónico.');</script>");
+                            Alert("Ya existe un usuario con el mismo correo electrónico.", NotificationType.error);
                             return View();
                         }
                     }
 
-                    Response.Write("<script>alert('¡Usuario Registrado!');</script>");
+                    Alert("¡Usuario Registrado!", NotificationType.success);
                     ModelState.Clear();
-                    return View();
+                    return Redirect("Login");
                 }                
             }
             catch (Exception ex)
