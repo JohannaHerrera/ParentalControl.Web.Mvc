@@ -83,11 +83,9 @@ namespace ParentalControl.Web.Mvc.Controllers
                         db.SaveChanges();
                     }
                     Response.Write("<script>return alert('¡Horario Añadido!');</script>");
-                    return View();
                 }
-                return RedirectToAction("Index");
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [AuthorizeParent]
@@ -112,11 +110,12 @@ namespace ParentalControl.Web.Mvc.Controllers
                 catch (Exception ex)
                 {
 
-                    return RedirectToAction("Index", "News");
+                    return RedirectToAction("Index");
                 }
+                
             }
-           
-            return View();
+            return RedirectToAction("Index");
+
         }
 
         [AuthorizeParent]
@@ -156,8 +155,8 @@ namespace ParentalControl.Web.Mvc.Controllers
                         db.SaveChanges();
                         return RedirectToAction("Index");
                     }
-                    Response.Write("<script>return alert('¡Horario Añadido!');</script>");
-                    return View();
+                    Response.Write("<script>return alert('¡Horario Modificado!');</script>");
+                     View();
                 }
                 return RedirectToAction("Index");
             }

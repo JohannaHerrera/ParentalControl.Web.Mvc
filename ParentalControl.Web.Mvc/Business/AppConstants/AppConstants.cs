@@ -50,6 +50,14 @@ namespace ParentalControl.Web.Mvc.Business.AppConstants
             }
         }
 
+        public bool NoAccess
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public int WebConfiguration
         {
             get
