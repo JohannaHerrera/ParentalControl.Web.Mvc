@@ -249,6 +249,7 @@
     <Compile Include="Models\DeviceListModel.cs" />
     <Compile Include="Models\DevicePCModel.cs" />
     <Compile Include="Models\DevicePhoneModel.cs" />
+    <Compile Include="Models\Enum.cs" />
     <Compile Include="Models\InfantAccountModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
@@ -264,6 +265,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\AddInfantAccount.png" />
     <Content Include="Content\Images\android.png" />
     <Content Include="Content\Images\borrar.png" />
     <Content Include="Content\Images\calendario.png" />
@@ -287,6 +289,7 @@
     <Content Include="Content\Images\notificaciones.png" />
     <Content Include="Content\Images\windows.png" />
     <Content Include="Content\ParentalControlStyle.css" />
+    <Content Include="Content\plugins\sweetalert2.css" />
     <Content Include="Data\ParentalControlDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ParentalControlDB.edmx</DependentUpon>
@@ -321,6 +324,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\plugins\sweetalert2.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -360,6 +364,7 @@
     <Content Include="Views\Device\DeleteDevicePC.cshtml" />
     <Content Include="Views\Device\DeleteDevicePhone.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
+    <Content Include="Views\Shared\_NotificationPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

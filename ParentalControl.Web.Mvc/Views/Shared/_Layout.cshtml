@@ -6,7 +6,8 @@
     <title>JKN - Control Parental</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link href="~/Content/plugins/sweetalert2.css" rel="stylesheet" />
+    <script src="~/Scripts/plugins/sweetalert2.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -30,6 +31,7 @@
         </div>
     </div>
     <div class="container body-content">
+        @Html.Partial("_NotificationPanel")
         @RenderBody()
         <hr />
         <footer>
@@ -39,7 +41,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Windows;
 using System.Windows.Forms;
+using static ParentalControl.Web.Mvc.Models.Enum;
 
 namespace ParentalControl.Web.Mvc.Controllers
 {
@@ -82,7 +83,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                             db.InfantAccount.Add(infantAccount);
                             db.SaveChanges();
                         }
-                        Response.Write("<script>return alert('¡Hijo Añadido!');</script>");
+                        Alert("Se ha creado el Infante con éxito", NotificationType.success);
                         return Redirect("Index");
                     }
                     else
@@ -160,11 +161,12 @@ namespace ParentalControl.Web.Mvc.Controllers
                             db.Entry(infantAccount).State=System.Data.Entity.EntityState.Modified;
                             db.SaveChanges();
                         }
-                        Response.Write("<script>return alert('¡Hijo Añadido!');</script>");
+                        Alert("Se ha editado el Infante con éxito", NotificationType.success);
                         return Redirect("Index");
                     }
                     else
                     {
+                        Alert("Ocurrió un problema al editar el Infante", NotificationType.error);
                         return View(infantAccountModel);
                     }
                 }
@@ -184,20 +186,76 @@ namespace ParentalControl.Web.Mvc.Controllers
         [HttpGet]
         public ActionResult DeleteInfantAccount(int? infantAccountId)
         {
-            if (System.Windows.Forms.MessageBox.Show("¿Seguro que desea eliminar la cuenta de infante?", "Eliminar",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button1) == DialogResult.Yes)
-            { 
+            try
+            {
+                Activity activity = new Activity();
+                App app = new App();
+                DevicePhone devicePhone = new DevicePhone();
+                DeviceUse deviceUse = new DeviceUse();
+                Request request = new Request();
+                WebConfiguration webConfiguration = new WebConfiguration();
+                WindowsAccount windowsAccount = new WindowsAccount();
                 InfantAccount infantAccount = new InfantAccount();
+
                 using (var db = new ParentalControlDBEntities())
                 {
+                    activity = db.Activity.Find(infantAccountId);
+                    if (activity != null)
+                    {
+                        db.Activity.Remove(activity);
+                        db.SaveChanges();
+                    }
+                    app = db.App.Find(infantAccountId);
+                    if (app != null)
+                    {
+                        db.App.Remove(app);
+                        db.SaveChanges();
+                    }
+                    devicePhone = db.DevicePhone.Find(infantAccountId);
+                    if (devicePhone != null)
+                    {
+                        devicePhone.InfantAccountId = null;
+                        db.Entry(devicePhone).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    deviceUse = db.DeviceUse.Find(infantAccountId);
+                    if (deviceUse != null)
+                    {
+                        db.DeviceUse.Remove(deviceUse);
+                        db.SaveChanges();
+                    }
+                    request = db.Request.Find(infantAccountId);
+                    if (request != null)
+                    {
+                        db.Request.Remove(request);
+                        db.SaveChanges();
+                    }
+                    webConfiguration = db.WebConfiguration.Find(infantAccountId);
+                    if (webConfiguration != null)
+                    {
+                        db.WebConfiguration.Remove(webConfiguration);
+                        db.SaveChanges();
+                    }
+                    windowsAccount = db.WindowsAccount.Find(infantAccountId);
+                    if (windowsAccount != null)
+                    {
+                        windowsAccount.InfantAccountId = null;
+                        db.Entry(windowsAccount).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    
                     infantAccount = db.InfantAccount.Find(infantAccountId);
                     db.InfantAccount.Remove(infantAccount);
                     db.SaveChanges();
-                }  
-                
+                }
+                Alert("Se eliminó la cuenta de infante satisfactoriamente", NotificationType.success);
+                return Redirect("Index");
             }
-            return Redirect("Index");
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
 
     }
