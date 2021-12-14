@@ -1,7 +1,8 @@
-﻿@model IEnumerable<ParentalControl.Web.Mvc.Data.News>
+﻿
+@model ParentalControl.Web.Mvc.Models.InfantAccountModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "AddInfantAccount";
 }
 
 <!DOCTYPE html>
@@ -28,7 +29,7 @@
                 <a href='@Url.Action("Index", "Notification")'><img src="~/Content/Images/notificaciones.png"></a>
                 <a href='@Url.Action("Index", "Notification")'>Notificaciones</a>
             </div>
-            <div class="info-Content">               
+            <div class="info-Content">
                 <div id="menu-Parent">
                     <div class="button-menu-Parent">
                         @Html.ActionLink("Cerrar Sesión", "Login", "Account", new { area = "" }, new { @class = "button-parent" })
@@ -36,33 +37,36 @@
                     <div class="button-menu-Parent">
                         @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
                     </div>
-                </div>               
-                <div class="info-Section">
-                    <h2 id="sectionTitle">Tips y Noticias</h2>
-                    <hr />
-                    <div id="sectionTable">
-                        <table id="table-News" class="table">
-                            @foreach (var item in Model)
-                            {
-                                <tr id="row-News">
-                                    <td id="newsTitle">
-                                        @Html.DisplayFor(modelItem => item.NewsTitle)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NewsDescription)
-                                    </td>
-                                    <td>
-                                        <a href="@Html.DisplayFor(modelItem => item.NewsLink)" target="_blank">Leer más...</a>
-                                    </td>
-                                </tr>
-                            }
-
-                        </table>
-                    </div>                   
                 </div>
-            </div>           
+                @using (Html.BeginForm("AddInfantAccount", "InfantAccount", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <div>
+                                @Html.LabelFor(d => d.InfantName)
+                                @Html.TextBoxFor(d => d.InfantName, "", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(d => d.InfantName, null, new { @class = "text-danger" })
+                            </div>
+                            <div>
+                                @Html.Label("Seleccione el género:")<br />
+                                @Html.Label("Masculino:")
+                                @Html.RadioButtonFor(d => d.InfantGender, "Masculino")<br />
+                                @Html.Label("Femenino:")
+                                @Html.RadioButtonFor(d => d.InfantGender, "Femenino")<br />
+                                @Html.ValidationMessageFor(d => d.InfantGender, null, new { @class = "text-danger" })
+                            </div>
+                            
+                            <div class="mt-4" style="text-align:center">
+                                <input type="submit" value="Guardar" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                } 
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

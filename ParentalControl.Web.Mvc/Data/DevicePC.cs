@@ -18,6 +18,7 @@ namespace ParentalControl.Web.Mvc.Data
         public DevicePC()
         {
             this.App = new HashSet<App>();
+            this.AppDevice = new HashSet<AppDevice>();
             this.WindowsAccount = new HashSet<WindowsAccount>();
         }
     
@@ -29,6 +30,8 @@ namespace ParentalControl.Web.Mvc.Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<App> App { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AppDevice> AppDevice { get; set; }
         public virtual Parent Parent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WindowsAccount> WindowsAccount { get; set; }

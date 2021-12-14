@@ -8,12 +8,14 @@ using System.Web.Mvc;
 using System.Data;
 using System.Data.Entity;
 using System.Net;
+using ParentalControl.Web.Mvc.Filters;
 
 namespace ParentalControl.Web.Mvc.Controllers
 {
     public class ScheduleController : BaseController
     {
         //List Schedule
+        [AuthorizeParent]
         public ActionResult Index()
         {
             try
@@ -42,12 +44,15 @@ namespace ParentalControl.Web.Mvc.Controllers
                 return View();
             }
         }
-        
+
+        [AuthorizeParent]
         public ActionResult Create()
         {
             var parent = this.GetCurrentUserInfo();
             return View();
         }
+
+        [AuthorizeParent]
         [HttpPost]
         public ActionResult Create(DateTime start, DateTime end)
         {
@@ -83,6 +88,7 @@ namespace ParentalControl.Web.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [AuthorizeParent]
         public ActionResult Edit(int? scheduleId)
         {
 
@@ -111,6 +117,8 @@ namespace ParentalControl.Web.Mvc.Controllers
             return RedirectToAction("Index");
 
         }
+
+        [AuthorizeParent]
         [HttpPost]
         public ActionResult Edit( int scheduleId, int parentId, DateTime ScheduleCreationDate, DateTime start, DateTime end)
         {
@@ -155,6 +163,7 @@ namespace ParentalControl.Web.Mvc.Controllers
             return View();
         }
 
+        [AuthorizeParent]
         public ActionResult Delete(int? scheduleId)
         {
             Schedule schedule = new Schedule();
@@ -173,6 +182,8 @@ namespace ParentalControl.Web.Mvc.Controllers
             }
             return View(schedule);
         }
+
+        [AuthorizeParent]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? scheduleId)
         {

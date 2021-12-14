@@ -17,5 +17,85 @@ namespace ParentalControl.Web.Mvc.Business.AppConstants
                 return "CurrentUser";
             }
         }
+
+        public string Femenino
+        {
+            get
+            {
+                return "Femenino";
+            }
+        }
+
+        public string Masculino
+        {
+            get
+            {
+                return "Masculino";
+            }
+        }
+
+        public string NoProtected
+        {
+            get
+            {
+                return "No Protegido";
+            }
+        }
+
+        public bool Access
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool NoAccess
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public int WebConfiguration
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        public int AppConfiguration
+        {
+            get
+            {
+                return 2;
+            }
+        }
+
+        public int DeviceConfiguration
+        {
+            get
+            {
+                return 3;
+            }
+        }
+
+        public int RequestStateApproved
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        public int RequestStateDisapproved
+        {
+            get
+            {
+                return 2;
+            }
+        }
     }
 }

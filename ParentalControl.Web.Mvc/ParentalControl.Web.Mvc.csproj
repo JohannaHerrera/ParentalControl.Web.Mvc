@@ -52,6 +52,7 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -63,6 +64,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -172,12 +174,17 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InfantAccountController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Data\Activity.cs">
       <DependentUpon>ParentalControlDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\App.cs">
+      <DependentUpon>ParentalControlDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\AppDevice.cs">
       <DependentUpon>ParentalControlDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\DevicePC.cs">
@@ -239,11 +246,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\DeviceListModel.cs" />
     <Compile Include="Models\DevicePCModel.cs" />
     <Compile Include="Models\DevicePhoneModel.cs" />
+    <Compile Include="Models\InfantAccountModel.cs" />
+    <Compile Include="Models\InfantAccountRules.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
+    <Compile Include="Models\RequestModel.cs" />
+    <Compile Include="Models\ScheduleOptionModel.cs" />
+    <Compile Include="Models\WebConfigurationModel.cs" />
     <Compile Include="Models\WindowsAccountModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -255,12 +268,25 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\android.png" />
+    <Content Include="Content\Images\borrar.png" />
     <Content Include="Content\Images\calendario.png" />
     <Content Include="Content\Images\children.png" />
     <Content Include="Content\Images\control-parental.png" />
+    <Content Include="Content\Images\delete.png" />
     <Content Include="Content\Images\devices.png" />
+    <Content Include="Content\Images\edit.png" />
+    <Content Include="Content\Images\editar 32.png" />
+    <Content Include="Content\Images\eliminar 32.png" />
+    <Content Include="Content\Images\flecha 32.png" />
     <Content Include="Content\Images\flecha-correcta.png" />
+    <Content Include="Content\Images\hijo 64.png" />
+    <Content Include="Content\Images\hijo.png" />
+    <Content Include="Content\Images\flecha-izquierda.png" />
     <Content Include="Content\Images\icono-menu.png" />
+    <Content Include="Content\Images\ninaRequest.png" />
+    <Content Include="Content\Images\ninoRequest.png" />
+    <Content Include="Content\Images\nina.png" />
+    <Content Include="Content\Images\nina_64.png" />
     <Content Include="Content\Images\notificaciones.png" />
     <Content Include="Content\Images\windows.png" />
     <Content Include="Content\ParentalControlStyle.css" />
@@ -326,10 +352,18 @@
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Device\Index.cshtml" />
     <Content Include="Views\Device\DevicePcDetails.cshtml" />
+    <Content Include="Views\Device\DevicePhoneDetails.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\Schedule\Edit.cshtml" />
     <Content Include="Views\Schedule\Delete.cshtml" />
+    <Content Include="Views\InfantAccount\Index.cshtml" />
+    <Content Include="Views\InfantAccount\AddInfantAccount.cshtml" />
+    <Content Include="Views\InfantAccount\EditInfantAccount.cshtml" />
+    <Content Include="Views\Device\DeleteDevicePC.cshtml" />
+    <Content Include="Views\Device\DeleteDevicePhone.cshtml" />
+    <Content Include="Views\Notification\Index.cshtml" />
+    <Content Include="Views\InfantAccount\RulesInfantAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

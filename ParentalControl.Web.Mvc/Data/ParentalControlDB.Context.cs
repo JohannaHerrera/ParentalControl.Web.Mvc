@@ -27,6 +27,7 @@ namespace ParentalControl.Web.Mvc.Data
     
         public virtual DbSet<Activity> Activity { get; set; }
         public virtual DbSet<App> App { get; set; }
+        public virtual DbSet<AppDevice> AppDevice { get; set; }
         public virtual DbSet<DevicePC> DevicePC { get; set; }
         public virtual DbSet<DevicePhone> DevicePhone { get; set; }
         public virtual DbSet<DevicePhoneUse> DevicePhoneUse { get; set; }

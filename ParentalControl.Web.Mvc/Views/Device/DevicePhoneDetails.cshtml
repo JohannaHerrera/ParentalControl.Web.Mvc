@@ -1,9 +1,9 @@
-﻿@model ParentalControl.Web.Mvc.Models.DevicePCModel
+﻿@model ParentalControl.Web.Mvc.Models.DevicePhoneModel
 
 @{
-    ViewBag.Title = "DevicePcDetails";
-    ViewBag.WindowsAccounts = Model.windowsAccountList;
+    ViewBag.Title = "DevicePhoneDetails";
 }
+
 
 <!DOCTYPE html>
 <html>
@@ -39,45 +39,66 @@
                     </div>
                 </div>
                 <div class="info-Section">
-                    @using (Html.BeginForm("DevicePcDetails", "Device", FormMethod.Post, new { @id = "frmSaveDeviceChanges" }))
+                    @using (Html.BeginForm("DevicePhoneDetails", "Device", FormMethod.Post, new { @id = "frmSaveDeviceChanges" }))
                     {
-                        @Html.HiddenFor(m => m.DevicePCId)
+                        @Html.HiddenFor(m => m.DevicePhoneId)
                         @Html.HiddenFor(m => m.ParentId)
-                        @Html.Hidden("windowsAccounts", "");
-                        @Html.Hidden("infantAccountsSelected", "");
+                        @Html.HiddenFor(m => m.DevicePhoneCode)
+                        @Html.HiddenFor(m => m.InfantAccountId)
+                        @Html.Hidden("infantAccountSelected", "");
+                        @Html.Hidden("schedules", "");
 
                         <div id="deviceName">
                             <a href='@Url.Action("Index", "Device")'><img src="~/Content/Images/flecha-izquierda.png"></a>
                             <div id="sectionTitle">
-                                @Html.TextBoxFor(m => m.DevicePCName, (object)new { @disabled = true, @id = "nameDevicePc" })
+                                @Html.TextBoxFor(m => m.DevicePhoneName, (object)new { @disabled = true, @id = "nameDevicePc" })
                             </div>
                             <button type="button" onclick="Habilitar(); return false;"><img src="~/Content/Images/edit.png"></button>
                             <hr />
                         </div>
 
                         <div>
-                            <table id="table-Windows-Accounts" class="table">
+                            <table id="table-DevicePhone" class="table">
                                 <tr>
-                                    <th>Cuentas Windows</th>
-                                    <th>Cuentas Infantiles</th>
+                                    <td>
+                                        <p>Asignado a:</p>
+                                    </td>
+                                    <td>
+                                        @if (Model.InfantAccountId == null)
+                                        {
+                                            @Html.DropDownList("infantAccounts", ViewData["infantAccounts"] as SelectList)
+                                        }
+                                        else
+                                        {
+                                            <select id="infantAccounts" name="infantAccounts">
+                                                @foreach (SelectListItem option in ViewData["infantAccounts"] as SelectList)
+                                                {
+                                                    <option value="@option.Value" @(option.Value == Model.InfantAccountId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                }
+                                            </select>
+                                        }
+                                    </td>
                                 </tr>
-                                @foreach (var item in Model.windowsAccountList)
+                            </table>
+                            <h6 id="SelectTitle">Seleccione el horario de uso:</h6>
+                            <table id="table-DeviceUse" class="table">
+                                @foreach (var item in Model.deviceUseList)
                                 {
                                     <tr>
                                         <td>
-                                            <p>@Html.DisplayFor(modelItem => item.WindowsAccountName)</p>
+                                            <p>@Html.DisplayFor(modelItem => item.DevicePhoneUseDay) :</p>
                                         </td>
                                         <td>
-                                            @if (item.InfantAccountId == null)
+                                            @if (item.ScheduleId == null)
                                             {
-                                                @Html.DropDownList("infantAccounts", ViewData["infantAccounts"] as SelectList)
+                                                @Html.DropDownList("scheduleList", ViewData["scheduleList"] as SelectList)
                                             }
                                             else
                                             {
-                                                <select id="infantAccounts" name="infantAccounts">
-                                                    @foreach (SelectListItem option in ViewData["infantAccounts"] as SelectList)
+                                                <select id="scheduleList" name="scheduleList">
+                                                    @foreach (SelectListItem option in ViewData["scheduleList"] as SelectList)
                                                     {
-                                                        <option value="@option.Value" @(option.Value == item.InfantAccountId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                        <option value="@option.Value" @(option.Value == Model.InfantAccountId.ToString() ? "selected='selected'" : "")>@option.Text</option>
                                                     }
                                                 </select>
                                             }
@@ -87,7 +108,7 @@
                             </table>
                         </div>
 
-                        <div class="btnSave">
+                        <div class="btnSaveDevicePhone">
                             <button id="btnGuardar" type="button" class="btn btn-primary" onclick="Procesar(); return false;">
                                 Guardar
                             </button>
@@ -119,36 +140,44 @@
     }
 
     function Procesar() {
-        var table = document.getElementById('table-Windows-Accounts');
-        var accounts = [];
+        var infantDropDown = document.getElementById('infantAccounts');
+        var infantSelected = [];
 
-        for (var r = 1, n = table.rows.length; r < n; r++) {
-            accounts.push(table.rows[r].cells[0].innerText);
+        var options = infantDropDown && infantDropDown.options;
+        var opt;
+
+        for (var j = 0, jLen = options.length; j < jLen; j++) {
+            opt = options[j];
+
+            if (opt.selected) {
+                infantSelected.push(opt.value);
+            }
         }
+        
 
-        $("#windowsAccounts").val(accounts);  
+        $("#infantAccountSelected").val(infantSelected);
 
-        var dropDownList = document.getElementsByName('infantAccounts');
-        var result = [];
-        var i;
 
-        for (i = 0; i < dropDownList.length; i++) {
-            var options = dropDownList[i] && dropDownList[i].options;
+        var scheduleDropDownList = document.getElementsByName('scheduleList');
+        var schedules = [];
+        var x;
+
+        for (x = 0; x < scheduleDropDownList.length; x++) {
+            var options = scheduleDropDownList[x] && scheduleDropDownList[x].options;
             var opt;
 
-            for (var j = 0, jLen = options.length; j < jLen; j++) {
-                opt = options[j];
+            for (var y = 0, yLen = options.length; y < yLen; y++) {
+                opt = options[y];
 
                 if (opt.selected) {
-                    result.push(opt.value);
+                    schedules.push(opt.value);
                 }
             }
         }
 
-        $("#infantAccountsSelected").val(result);
+        $("#schedules").val(schedules);
 
         var form = document.getElementById('frmSaveDeviceChanges');
         form.submit();
     }
 </script>
-
