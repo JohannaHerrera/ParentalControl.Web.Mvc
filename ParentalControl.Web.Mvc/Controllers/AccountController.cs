@@ -133,10 +133,17 @@ namespace ParentalControl.Web.Mvc.Controllers
         {
             try
             {
+                Parent parentdb = new Parent();
                 var parent = this.GetCurrentUserInfo();
+                using (var db = new ParentalControlDBEntities())
+                {
+                    parentdb = db.Parent.Find(parent.Id);
+                }
+                
                 ParentModel parentModel = new ParentModel();
                 ViewBag.idParent = parent.Id;
-                parentModel.ParentUsername = parent.UserName;
+                parentModel.ParentUsername = parentdb.ParentUsername;
+
 
                 return View(parentModel);
             }
