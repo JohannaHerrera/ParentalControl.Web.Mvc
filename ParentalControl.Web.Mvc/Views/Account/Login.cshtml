@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JKN - Control Parental</title>
     @Styles.Render("~/Content/ParentalControlStyle.css")
+    <link href="~/Content/plugins/sweetalert2.css" rel="stylesheet" />
+    <script src="~/Scripts/plugins/sweetalert2.js"></script>
 </head>
 <body>
     <div class="container">
@@ -51,6 +53,9 @@
             </div>
         </div>
     </div>
-    
+    @if (TempData["notification"] != null)
+    {
+        @Html.Raw(TempData["notification"])
+    }
 </body>
 </html>

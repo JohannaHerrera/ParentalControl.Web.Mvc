@@ -487,11 +487,13 @@ namespace ParentalControl.Web.Mvc.Controllers
 
                 }
 
+                Alert("¡La configuración se actualizó correctamente!", NotificationType.success);
                 return RedirectToAction("RulesInfantAccount", "InfantAccount", new { infantAccountId = infantAccountId });
             }
             catch (Exception ex)
             {
-                return View();
+                Alert("Ocurrió un error al actualizar la configuración. Inténtelo de nuevo", NotificationType.error);
+                return RedirectToAction("RulesInfantAccount", "InfantAccount", new { infantAccountId = infantAccountId });
             }
         }
     }

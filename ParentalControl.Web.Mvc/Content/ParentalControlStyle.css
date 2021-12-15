@@ -623,7 +623,30 @@ input:checked + .slider:before {
         margin-bottom: auto;
     }
 
+.tableInfants {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-top: 25px;
+    font-family: Arial !important;
+    font-size: 12px;
+    width: 40%;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
 
+    .tableInfants th, td {
+        padding-bottom: 20px;
+        font-weight: bold;
+        font-family: Arial;
+        font-size: 18px;
+    }
+
+#btnNewInfant{
+    font-weight: bold;
+    font-family: Arial;
+}
 
 
 
