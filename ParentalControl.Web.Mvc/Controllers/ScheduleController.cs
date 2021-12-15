@@ -9,6 +9,10 @@ using System.Data;
 using System.Data.Entity;
 using System.Net;
 using ParentalControl.Web.Mvc.Filters;
+using ParentalControl.Web.Mvc.Business.AppConstants;
+using System.Windows;
+using System.Windows.Forms;
+using static ParentalControl.Web.Mvc.Models.Enum;
 
 namespace ParentalControl.Web.Mvc.Controllers
 {
@@ -47,8 +51,7 @@ namespace ParentalControl.Web.Mvc.Controllers
 
         [AuthorizeParent]
         public ActionResult Create()
-        {
-            var parent = this.GetCurrentUserInfo();
+        {    
             return View();
         }
 
@@ -66,6 +69,7 @@ namespace ParentalControl.Web.Mvc.Controllers
             if (string.IsNullOrEmpty(scheduleModel.ScheduleStartTime.ToString())
                 || string.IsNullOrEmpty(scheduleModel.ScheduleEndTime.ToString()))
             {
+                Alert("El registro contiene campos vacíos", NotificationType.warning);
                 return View();
             }
             else
@@ -76,7 +80,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                     scheduleModeList = ValidationSchedule(start, end, parent.Id);
                     if (scheduleModeList.Count > 0)
                     {
-                        TempData["msg"] = "<script>alert('El registro ya existe!');</script>";
+                        Alert("El registro ya existe", NotificationType.error);
                         return View();
                     }
                     else
@@ -91,19 +95,19 @@ namespace ParentalControl.Web.Mvc.Controllers
                             db.Schedule.Add(scheduleCreate);
                             db.SaveChanges();
                         }
-                        TempData["msg"] = "<script>alert('Horario Agregado!');</script>";
-                        return View();
+                        Alert("¡Se agregó el horario correctamente!", NotificationType.success);
+                        return Redirect("Index");
+
                     }
                 }
                 else
                 {
-                    TempData["msg"] = "<script>alert('La hora inicio debe ser menor a la hora fin');</script>";
+                    Alert("La hora de inicio debe ser MENOR a la hora final", NotificationType.warning);
                     return View();
                 }
                 
             }
-            
-            return RedirectToAction("Index");
+
         }
 
         [AuthorizeParent]
@@ -138,56 +142,72 @@ namespace ParentalControl.Web.Mvc.Controllers
 
         [AuthorizeParent]
         [HttpPost]
-        public ActionResult Edit( int scheduleId, int parentId, DateTime ScheduleCreationDate, DateTime start, DateTime end)
+        public ActionResult Edit( int scheduleId/*, int parentId*/, DateTime start, DateTime end)
         {
             var parent = this.GetCurrentUserInfo();
-            ScheduleModel scheduleModel = new ScheduleModel();
-            scheduleModel.ScheduleId = scheduleId;
-            scheduleModel.ScheduleStartTime = start;
-            scheduleModel.ScheduleEndTime = end;
-            scheduleModel.ParentId = parentId;
-            scheduleModel.ScheduleCreationDate = ScheduleCreationDate;
+            //ScheduleModel scheduleModel = new ScheduleModel();
+            //scheduleModel.ScheduleId = scheduleId;
+            //scheduleModel.ScheduleStartTime = start;
+            //scheduleModel.ScheduleEndTime = end;
+            //scheduleModel.ParentId = parentId;
+            //scheduleModel.ScheduleCreationDate = ScheduleCreationDate;
 
-            if (string.IsNullOrEmpty(scheduleModel.ScheduleStartTime.ToString())
-                || string.IsNullOrEmpty(scheduleModel.ScheduleEndTime.ToString())
-                || string.IsNullOrEmpty(scheduleModel.ScheduleId.ToString()))
+            if (string.IsNullOrEmpty(start.ToString())
+                || string.IsNullOrEmpty(end.ToString())
+                || string.IsNullOrEmpty(scheduleId.ToString()))
             {
+                Alert("El registro presenta campos vacíos", NotificationType.warning);
                 return View();
+                
             }
             else
             {
-                //ScheduleModel scheduleUpdate = new ScheduleModel();
-                List<ScheduleModel> scheduleModeList = new List<ScheduleModel>();
-                scheduleModeList = ValidationSchedule(start, end, parent.Id);
-                if (scheduleModeList.Count > 0)
+                ScheduleModel scheduleModel = new ScheduleModel();
+                scheduleModel.ScheduleId = scheduleId;
+                scheduleModel.ScheduleStartTime = start;
+                scheduleModel.ScheduleEndTime = end;
+
+                
+                if (scheduleModel.Validate(scheduleModel))
                 {
-                    
-                    TempData["msgE"] = "<script>alert('El registro ya existe!');</script>";
-                    return View();
+                    //ScheduleModel scheduleUpdate = new ScheduleModel();
+                    List<ScheduleModel> scheduleModeList = new List<ScheduleModel>();
+                    scheduleModeList = ValidationSchedule(start, end, parent.Id);
+                    if (scheduleModeList.Count > 0)
+                    {
+
+                        Alert("El registro ya existe", NotificationType.error);
+                        return Redirect("Index");
+                    }
+                    else
+                    {
+                        
+                        using (var db = new ParentalControlDBEntities())
+                        {
+                            Schedule scheduleUpdate = db.Schedule.Find(scheduleModel.ScheduleId);
+
+                            scheduleUpdate.ScheduleStartTime = scheduleModel.ScheduleStartTime;
+                            scheduleUpdate.ScheduleEndTime = scheduleModel.ScheduleEndTime;
+                            db.Entry(scheduleUpdate).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        Alert("El registro se actualizó correctamente", NotificationType.success);
+                        return Redirect("Index");
+                    }
                 }
                 else
                 {
-                    Schedule scheduleUpdate = new Schedule();
-                    scheduleUpdate.ScheduleId = scheduleModel.ScheduleId;
-                    scheduleUpdate.ParentId = scheduleModel.ParentId;
-                    scheduleUpdate.ScheduleCreationDate = scheduleModel.ScheduleCreationDate;
-                    scheduleUpdate.ScheduleStartTime = scheduleModel.ScheduleStartTime;
-                    scheduleUpdate.ScheduleEndTime = scheduleModel.ScheduleEndTime;
-
-
-                    using (var db = new ParentalControlDBEntities())
-                    {
-                        db.Entry(scheduleUpdate).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
-                    TempData["msgE"] = "<script>alert('Registro modificado exitosamente');</script>";
-                    return View();
+                    Alert("La hora inicio debe ser MENOR a la hora final", NotificationType.warning);
+                    Schedule sch = new Schedule();
+                    sch.ScheduleId = scheduleModel.ScheduleId;
+                    sch.ParentId = scheduleModel.ParentId;
+                    sch.ScheduleStartTime = scheduleModel.ScheduleStartTime;
+                    sch.ScheduleEndTime = scheduleModel.ScheduleEndTime;
+                    return View(sch);
                 }
+                
             }
-            return RedirectToAction("Index");
 
-            return View();
         }
 
         [AuthorizeParent]
@@ -234,14 +254,50 @@ namespace ParentalControl.Web.Mvc.Controllers
                     }
 
                 }
+                Alert("El registro se eliminó correctamente", NotificationType.success);
+                return View();
             }
             catch (Exception e)
             {
-                return View();
+                Alert("Ha ocurrido un error", NotificationType.error);
+                return View();      
             }
-            
-            return RedirectToAction("Index");
         }
+        [AuthorizeParent]
+        [HttpGet]
+        public ActionResult DeleteSchedule(int? scheduleId)
+        {
+            try
+            {
+                Schedule schedule = new Schedule();
+                using (var db = new ParentalControlDBEntities())
+                {
+                    schedule = db.Schedule.Find(scheduleId);
+                    if (schedule != null)
+                    {
+                        var apps = db.App.Where(x => x.ScheduleId == schedule.ScheduleId);
+                        var deviceUse = db.DeviceUse.Where(x => x.ScheduleId == schedule.ScheduleId);
+                        var devicePhoneUse = db.DevicePhoneUse.Where(x => x.ScheduleId == schedule.ScheduleId);
+                        //Valida que se borre la llave foranea
+                        db.App.RemoveRange(apps);
+                        db.DevicePhoneUse.RemoveRange(devicePhoneUse);
+                        db.DeviceUse.RemoveRange(deviceUse);
+                        db.Schedule.Remove(schedule);
+                        db.SaveChanges();
+                    }
+
+                }
+                Alert("El registro se eliminó correctamente", NotificationType.success);
+                
+                return Redirect("Index");
+            }
+            catch (Exception e)
+            {
+                Alert("Ha ocurrido un error", NotificationType.error);
+                return Redirect("Index");
+            }
+        }
+
         public List<ScheduleModel> ValidationSchedule(DateTime start, DateTime end, int parentId)
         {
 

@@ -182,20 +182,22 @@ namespace ParentalControl.Web.Mvc.Controllers
         }
         [AuthorizeParent]
         [HttpPost]
-        public ActionResult EditProfile(int? parentId, string name, string email, string password)
+        public ActionResult EditProfile(int parentId, string name, string email, string password)
         {
             var parent = this.GetCurrentUserInfo();
-            ParentModel parentModel = new ParentModel();
+            Parent parentModel = new Parent();
             parentModel.ParentUsername = name;
             parentModel.ParentEmail = email;
             parentModel.ParentPassword = password;
+            parentModel.ParentId = parentId;
 
             if (string.IsNullOrEmpty(parentModel.ParentUsername)
                 || string.IsNullOrEmpty(parentModel.ParentEmail)
                 || string.IsNullOrEmpty(parentModel.ParentPassword)
-                || parentId== null)
+                || string.IsNullOrEmpty(parentModel.ParentId.ToString()))
             {
-                return View();
+                Alert("El registro contiene campos vacíos", NotificationType.warning);
+                return View(parentModel);
             }
             else
             {
@@ -207,16 +209,10 @@ namespace ParentalControl.Web.Mvc.Controllers
                     parentUpdate.ParentPassword = parentModel.ParentPassword;
                     db.Entry(parentUpdate).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("MyProfile");
                 }
-                TempData["msgE"] = "<script>alert('Registro modificado exitosamente');</script>";
-                return View();
-                
+                Alert("El registro se actualizó correctamente", NotificationType.success);
+                return Redirect("MyProfile");
             }
-            return RedirectToAction("MyProfile");
-
-            return View();
         }
-
     }
 }
