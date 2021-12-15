@@ -17,16 +17,22 @@ namespace ParentalControl.Web.Mvc.Models
         public DateTime ScheduleEndTime { get; set; }
         public DateTime ScheduleCreationDate { get; set; }
         public int ParentId { get; set; }
-        public string Validate(ScheduleModel scheduleModel)
+        public bool Validate(ScheduleModel scheduleModel)
         {
-            string message = string.Empty;
+            bool validation=false;
 
-            if (scheduleModel.ScheduleStartTime > scheduleModel.ScheduleEndTime)
+            if (scheduleModel.ScheduleStartTime >= scheduleModel.ScheduleEndTime)
             {
-                return "La hora inicio debe ser menor a la hora fin"; // Y si quiero darle 23 horas de uso?
+                //Inicio no puede ser mayor o igual a la hora final
+                validation = false;
+
+            }
+            else
+            {
+                validation = true;
             }
 
-            return message;
+            return validation;
         }
 
     }

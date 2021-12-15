@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "MyProfile";
+    
 }
 
 <!DOCTYPE html>
@@ -37,13 +38,19 @@
                         @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
                     </div>
                 </div>
+                <br />
                 <div>
                     <h2 id="sectionTitle">Mi Perfil</h2>
                     <hr />
-                    <table id="table-News" class="table">                       
+                    <table id="table-News" class="table">
                         <tr id="row-News">
                             <td id="newsTitle">
                                 @Model.ParentUsername
+                            </td>
+                            <td>
+                                <a href='@Url.Action("EditProfile", "Account", new { parentId = ViewBag.idParent })'>
+                                    <img src="~/Content/Images/editar 32.png">
+                                </a>
                             </td>
                         </tr>
                     </table>

@@ -272,6 +272,7 @@
     <Content Include="Content\Images\android.png" />
     <Content Include="Content\Images\borrar.png" />
     <Content Include="Content\Images\calendario.png" />
+    <Content Include="Content\Images\calendario2.png" />
     <Content Include="Content\Images\children.png" />
     <Content Include="Content\Images\control-parental.png" />
     <Content Include="Content\Images\delete.png" />
@@ -290,6 +291,7 @@
     <Content Include="Content\Images\nina.png" />
     <Content Include="Content\Images\nina_64.png" />
     <Content Include="Content\Images\notificaciones.png" />
+    <Content Include="Content\Images\reloj.png" />
     <Content Include="Content\Images\windows.png" />
     <Content Include="Content\ParentalControlStyle.css" />
     <Content Include="Content\plugins\sweetalert2.css" />
@@ -369,6 +371,7 @@
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Shared\_NotificationPanel.cshtml" />
     <Content Include="Views\InfantAccount\RulesInfantAccount.cshtml" />
+    <Content Include="Views\Account\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+@Html.Raw(TempData["msgE"])
 
 
 <!DOCTYPE html>
@@ -69,7 +69,9 @@
                 </form>
 
                 <div>
-                    @Html.ActionLink("Regresar", "Index")
+                    <a href="@Url.Action("Index", "Schedule")">
+                        <img src="~/Content/Images/flecha-izquierda.png">
+                    </a>
                 </div>
             </div>
         </div>

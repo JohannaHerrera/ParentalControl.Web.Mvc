@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -133,7 +134,9 @@ namespace ParentalControl.Web.Mvc.Controllers
             {
                 var parent = this.GetCurrentUserInfo();
                 ParentModel parentModel = new ParentModel();
+                ViewBag.idParent = parent.Id;
                 parentModel.ParentUsername = parent.UserName;
+
                 return View(parentModel);
             }
             catch (Exception ex)
@@ -142,5 +145,70 @@ namespace ParentalControl.Web.Mvc.Controllers
             }
             return View();
         }
+        [AuthorizeParent]
+        public ActionResult EditProfile(int? parentId)
+        {
+            if (parentId != null)
+            {
+                try
+                {
+                    //Se manda un dato de Data no de Modelo para usar el metodo Find
+                    Parent parentDB = new Parent();
+
+                   // var parent = this.GetCurrentUserInfo();
+                    using (var db = new ParentalControlDBEntities())
+                    {
+                        parentDB = db.Parent.Find(parentId);
+                    }
+                    ViewBag.list = parentDB;
+                    return View(parentDB);
+                }
+                catch (Exception ex)
+                {
+
+                    return RedirectToAction("MyProfile");
+                }
+
+            }
+            return RedirectToAction("MyProfile");
+        }
+        [AuthorizeParent]
+        [HttpPost]
+        public ActionResult EditProfile(int? parentId, string name, string email, string password)
+        {
+            var parent = this.GetCurrentUserInfo();
+            ParentModel parentModel = new ParentModel();
+            parentModel.ParentUsername = name;
+            parentModel.ParentEmail = email;
+            parentModel.ParentPassword = password;
+
+            if (string.IsNullOrEmpty(parentModel.ParentUsername)
+                || string.IsNullOrEmpty(parentModel.ParentEmail)
+                || string.IsNullOrEmpty(parentModel.ParentPassword)
+                || parentId== null)
+            {
+                return View();
+            }
+            else
+            {
+                using (var db = new ParentalControlDBEntities())
+                {
+                    Parent parentUpdate = db.Parent.Find(parentId);
+                    parentUpdate.ParentUsername = parentModel.ParentUsername;
+                    parentUpdate.ParentEmail = parentModel.ParentEmail;
+                    parentUpdate.ParentPassword = parentModel.ParentPassword;
+                    db.Entry(parentUpdate).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("MyProfile");
+                }
+                TempData["msgE"] = "<script>alert('Registro modificado exitosamente');</script>";
+                return View();
+                
+            }
+            return RedirectToAction("MyProfile");
+
+            return View();
+        }
+
     }
 }

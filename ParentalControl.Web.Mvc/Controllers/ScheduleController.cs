@@ -62,29 +62,47 @@ namespace ParentalControl.Web.Mvc.Controllers
             scheduleModel.ScheduleEndTime = end;
             var creationDate = DateTime.Now;
             var parent = this.GetCurrentUserInfo();
-            if (scheduleModel != null)
-            {
 
-                if (string.IsNullOrEmpty(scheduleModel.ScheduleStartTime.ToString())
-                    || string.IsNullOrEmpty(scheduleModel.ScheduleEndTime.ToString()))
+            if (string.IsNullOrEmpty(scheduleModel.ScheduleStartTime.ToString())
+                || string.IsNullOrEmpty(scheduleModel.ScheduleEndTime.ToString()))
+            {
+                return View();
+            }
+            else
+            {
+                if (scheduleModel.Validate(scheduleModel))
                 {
-                    return View();
+                    List<ScheduleModel> scheduleModeList = new List<ScheduleModel>();
+                    scheduleModeList = ValidationSchedule(start, end, parent.Id);
+                    if (scheduleModeList.Count > 0)
+                    {
+                        TempData["msg"] = "<script>alert('El registro ya existe!');</script>";
+                        return View();
+                    }
+                    else
+                    {
+                        using (var db = new ParentalControlDBEntities())
+                        {
+                            Schedule scheduleCreate = new Schedule();
+                            scheduleCreate.ScheduleStartTime = scheduleModel.ScheduleStartTime;
+                            scheduleCreate.ScheduleEndTime = scheduleModel.ScheduleEndTime;
+                            scheduleCreate.ScheduleCreationDate = creationDate;
+                            scheduleCreate.ParentId = parent.Id;
+                            db.Schedule.Add(scheduleCreate);
+                            db.SaveChanges();
+                        }
+                        TempData["msg"] = "<script>alert('Horario Agregado!');</script>";
+                        return View();
+                    }
                 }
                 else
                 {
-                    using (var db = new ParentalControlDBEntities())
-                    {
-                        Schedule scheduleCreate = new Schedule();
-                        scheduleCreate.ScheduleStartTime = scheduleModel.ScheduleStartTime;
-                        scheduleCreate.ScheduleEndTime = scheduleModel.ScheduleEndTime;
-                        scheduleCreate.ScheduleCreationDate = creationDate;
-                        scheduleCreate.ParentId = parent.Id;
-                        db.Schedule.Add(scheduleCreate);
-                        db.SaveChanges();
-                    }
-                    Response.Write("<script>return alert('¡Horario Añadido!');</script>");
+                    TempData["msg"] = "<script>alert('La hora inicio debe ser menor a la hora fin');</script>";
+                    return View();
                 }
+                
             }
+            
             return RedirectToAction("Index");
         }
 
@@ -129,18 +147,26 @@ namespace ParentalControl.Web.Mvc.Controllers
             scheduleModel.ScheduleEndTime = end;
             scheduleModel.ParentId = parentId;
             scheduleModel.ScheduleCreationDate = ScheduleCreationDate;
-            if (scheduleModel != null)
-            {
 
-                if (string.IsNullOrEmpty(scheduleModel.ScheduleStartTime.ToString())
-                    || string.IsNullOrEmpty(scheduleModel.ScheduleEndTime.ToString())
-                    || string.IsNullOrEmpty(scheduleModel.ScheduleId.ToString()))
+            if (string.IsNullOrEmpty(scheduleModel.ScheduleStartTime.ToString())
+                || string.IsNullOrEmpty(scheduleModel.ScheduleEndTime.ToString())
+                || string.IsNullOrEmpty(scheduleModel.ScheduleId.ToString()))
+            {
+                return View();
+            }
+            else
+            {
+                //ScheduleModel scheduleUpdate = new ScheduleModel();
+                List<ScheduleModel> scheduleModeList = new List<ScheduleModel>();
+                scheduleModeList = ValidationSchedule(start, end, parent.Id);
+                if (scheduleModeList.Count > 0)
                 {
+                    
+                    TempData["msgE"] = "<script>alert('El registro ya existe!');</script>";
                     return View();
                 }
                 else
                 {
-                    //ScheduleModel scheduleUpdate = new ScheduleModel();
                     Schedule scheduleUpdate = new Schedule();
                     scheduleUpdate.ScheduleId = scheduleModel.ScheduleId;
                     scheduleUpdate.ParentId = scheduleModel.ParentId;
@@ -151,15 +177,16 @@ namespace ParentalControl.Web.Mvc.Controllers
 
                     using (var db = new ParentalControlDBEntities())
                     {
-                        db.Entry(scheduleUpdate).State= EntityState.Modified;
+                        db.Entry(scheduleUpdate).State = EntityState.Modified;
                         db.SaveChanges();
                         return RedirectToAction("Index");
                     }
-                    Response.Write("<script>return alert('¡Horario Modificado!');</script>");
-                     View();
+                    TempData["msgE"] = "<script>alert('Registro modificado exitosamente');</script>";
+                    return View();
                 }
-                return RedirectToAction("Index");
             }
+            return RedirectToAction("Index");
+
             return View();
         }
 
@@ -187,14 +214,54 @@ namespace ParentalControl.Web.Mvc.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int? scheduleId)
         {
-            Schedule schedule = new Schedule();
+            try
+            {
+                Schedule schedule = new Schedule();
+                using (var db = new ParentalControlDBEntities())
+                {
+                    schedule = db.Schedule.Find(scheduleId);
+                    if (schedule != null)
+                    {
+                        var apps = db.App.Where(x => x.ScheduleId == schedule.ScheduleId);
+                        var deviceUse = db.DeviceUse.Where(x => x.ScheduleId == schedule.ScheduleId);
+                        var devicePhoneUse = db.DevicePhoneUse.Where(x => x.ScheduleId == schedule.ScheduleId);
+                        //Valida que se borre la llave foranea
+                        db.App.RemoveRange(apps);
+                        db.DevicePhoneUse.RemoveRange(devicePhoneUse);
+                        db.DeviceUse.RemoveRange(deviceUse);
+                        db.Schedule.Remove(schedule);
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                return View();
+            }
+            
+            return RedirectToAction("Index");
+        }
+        public List<ScheduleModel> ValidationSchedule(DateTime start, DateTime end, int parentId)
+        {
+
+            List<ScheduleModel> scheduleList = new List<ScheduleModel>();
             using (var db = new ParentalControlDBEntities())
             {
-                schedule = db.Schedule.Find(scheduleId);
-                db.Schedule.Remove(schedule);
-                db.SaveChanges();
+                scheduleList = (from schedule in db.Schedule
+                                where schedule.ParentId == parentId
+                                where schedule.ScheduleStartTime== start
+                                where schedule.ScheduleEndTime== end
+                                select new ScheduleModel
+                                {
+                                    ScheduleId = schedule.ScheduleId,
+                                    ScheduleStartTime = schedule.ScheduleStartTime,
+                                    ScheduleEndTime = schedule.ScheduleEndTime,
+                                    ParentId = schedule.ParentId
+                                }).ToList();
             }
-            return RedirectToAction("Index");
+            return scheduleList;
+
         }
     }
 }

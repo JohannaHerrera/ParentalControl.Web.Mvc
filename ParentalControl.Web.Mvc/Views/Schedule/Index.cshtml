@@ -62,18 +62,26 @@
                                          <td>
                                             @Html.DisplayFor(modelItem => item.ScheduleEndTime)
                                          </td>
+                                         <td>                                             
+                                             <a href='@Url.Action("Edit", "Schedule", new { scheduleId = item.ScheduleId })'>
+                                                 <img src="~/Content/Images/editar 32.png">
+                                             </a>
+                                             @*@Html.ActionLink("Editar", "Edit", new { scheduleId = item.ScheduleId })|
+                                             @Html.ActionLink("Delete", "Delete", new { scheduleId = item.ScheduleId })*@
+                                         </td>
                                          <td>
-                                             <a @*href='@Url.Action("DevicePhoneDetails", "Device", new { deviceId = item.DevicePhoneId })'><img src="~/Content/Images/flecha-correcta.png"*@></a>
-                                             @Html.ActionLink("Editar", "Edit", new { scheduleId = item.ScheduleId })|
-                                             @Html.ActionLink("Delete", "Delete", new { scheduleId = item.ScheduleId })
-                                             
+                                             <a href='@Url.Action("Delete", "Schedule", new { scheduleId = item.ScheduleId })'>
+                                                 <img src="~/Content/Images/eliminar 32.png">
+                                             </a>
                                          </td>
                                      </tr>
                                     }
-                                </table>
-                                <p>
-                                    @Html.ActionLink("Añadir horarios", "Create")
-                                </p>
+                                </table> 
+
+                                <a href="@Url.Action("Create", "Schedule")" class="btn btn-primary rounded-pill" >    
+                                    <img src="~/Content/Images/reloj.png" class="img-fluid">
+                                    Agregar Horario
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -86,9 +94,10 @@
                         <div id="sectionTable">
                             <div class="noData">
                                 <h3>Aún no has creado horarios</h3>
-                                <p>
-                                    @Html.ActionLink("Añadir horarios", "Create")
-                                </p>
+                                <a href="@Url.Action("Create", "Schedule")" class="btn btn-primary rounded-pill">
+                                    <img src="~/Content/Images/reloj.png" class="img-fluid">
+                                    Agregar Horario
+                                </a>
                             </div>
                         </div>
                     </div>
