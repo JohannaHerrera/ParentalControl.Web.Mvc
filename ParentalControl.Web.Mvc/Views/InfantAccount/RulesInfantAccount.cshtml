@@ -124,53 +124,64 @@
                                                     </thead>
                                                     <tbody>
                                                     <tbody>
-                                                        @foreach (var item in Model.AppList)
+                                                        @if (Model.AppList.Count() > 0)
+                                                        {
+                                                            foreach (var item in Model.AppList)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.AppName</td>
+
+                                                                    <td>@item.DeviceName</td>
+
+                                                                    @if (!(bool)item.AppAccessPermission)
+                                                                    {
+                                                                        <td>
+                                                                            <label class="switch">
+                                                                                <input type="checkbox" class="checkbox-App">
+                                                                                <span class="slider round"></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                            <label class="switch">
+                                                                                <input type="checkbox" class="checkbox-App" checked>
+                                                                                <span class="slider round"></span>
+                                                                            </label>
+                                                                        </td>
+                                                                    }
+
+                                                                    @if (item.ScheduleId == null)
+                                                                    {
+                                                                        <td>
+                                                                            @Html.DropDownList("scheduleList", ViewData["scheduleList"] as SelectList, new { onchange = "SelectSchedule()", @class = "scheduleAppList" })
+                                                                        </td>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                            <select id="scheduleList" name="scheduleList" onchange="SelectSchedule()" class="scheduleAppList">
+                                                                                @foreach (SelectListItem option in ViewData["scheduleList"] as SelectList)
+                                                                                {
+                                                                                    <option value="@option.Value" @(option.Value == item.ScheduleId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                                                }
+                                                                            </select>
+                                                                        </td>
+
+                                                                    }
+                                                                </tr>
+                                                            }
+                                                        }
+                                                        else
                                                         {
                                                             <tr>
-                                                                <td>@item.AppName</td>
-
-                                                                <td>@item.DeviceName</td>
-
-                                                                @if (!(bool)item.AppAccessPermission)
-                                                                {
-                                                                    <td>
-                                                                        <label class="switch">
-                                                                            <input type="checkbox" class="checkbox-App">
-                                                                            <span class="slider round"></span>
-                                                                        </label>
-                                                                    </td>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <td>
-                                                                        <label class="switch">
-                                                                            <input type="checkbox" class="checkbox-App" checked>
-                                                                            <span class="slider round"></span>
-                                                                        </label>
-                                                                    </td>
-                                                                }
-
-                                                                @if (item.ScheduleId == null)
-                                                                {
-                                                                    <td>
-                                                                        @Html.DropDownList("scheduleList", ViewData["scheduleList"] as SelectList, new { onchange = "SelectSchedule()", @class = "scheduleAppList" })
-                                                                    </td>
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    <td>
-                                                                        <select id="scheduleList" name="scheduleList" onchange="SelectSchedule()" class="scheduleAppList">
-                                                                            @foreach (SelectListItem option in ViewData["scheduleList"] as SelectList)
-                                                                            {
-                                                                                <option value="@option.Value" @(option.Value == item.ScheduleId.ToString() ? "selected='selected'" : "")>@option.Text</option>
-                                                                            }
-                                                                        </select>
-                                                                    </td>
-
-                                                                }
+                                                                <td>Aún no existen registros de aplicaciones.</td>
+                                                                <td>Ninguno.</td>
                                                             </tr>
                                                         }
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -227,7 +238,7 @@
                                                 </h4>
                                             </div>
                                             <div id="collapse4" class="panel-collapse collapse">
-                                                <table class="table">
+                                                <table class="table" id="table-Activity">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Actividad</th>

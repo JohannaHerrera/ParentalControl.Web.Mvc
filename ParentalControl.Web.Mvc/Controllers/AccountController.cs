@@ -135,6 +135,7 @@ namespace ParentalControl.Web.Mvc.Controllers
             {
                 Parent parentdb = new Parent();
                 var parent = this.GetCurrentUserInfo();
+
                 using (var db = new ParentalControlDBEntities())
                 {
                     parentdb = db.Parent.Find(parent.Id);
@@ -143,7 +144,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                 ParentModel parentModel = new ParentModel();
                 ViewBag.idParent = parent.Id;
                 parentModel.ParentUsername = parentdb.ParentUsername;
-
+                parentModel.ParentEmail = parentdb.ParentEmail;
 
                 return View(parentModel);
             }
@@ -153,6 +154,7 @@ namespace ParentalControl.Web.Mvc.Controllers
             }
             return View();
         }
+
         [AuthorizeParent]
         public ActionResult EditProfile(int? parentId)
         {
@@ -160,16 +162,18 @@ namespace ParentalControl.Web.Mvc.Controllers
             {
                 try
                 {
-                    //Se manda un dato de Data no de Modelo para usar el metodo Find
+                    ParentModel parentModel = new ParentModel();
+
                     Parent parentDB = new Parent();
 
-                   // var parent = this.GetCurrentUserInfo();
                     using (var db = new ParentalControlDBEntities())
                     {
-                        parentDB = db.Parent.Find(parentId);
+                        var parentdb = db.Parent.Where(x => x.ParentId == parentId).FirstOrDefault();
+                        parentModel.ParentUsername = parentdb.ParentUsername;
+                        parentModel.ParentEmail = parentdb.ParentEmail;
+                        parentModel.ParentPassword = parentdb.ParentPassword;
+                        return View(parentModel);
                     }
-                    ViewBag.list = parentDB;
-                    return View(parentDB);
                 }
                 catch (Exception ex)
                 {
@@ -180,21 +184,22 @@ namespace ParentalControl.Web.Mvc.Controllers
             }
             return RedirectToAction("MyProfile");
         }
+
         [AuthorizeParent]
         [HttpPost]
-        public ActionResult EditProfile(int parentId, string name, string email, string password)
+        public ActionResult EditProfile(string name, string email, string password)
         {
             var parent = this.GetCurrentUserInfo();
-            Parent parentModel = new Parent();
+            ParentModel parentModel = new ParentModel();
             parentModel.ParentUsername = name;
             parentModel.ParentEmail = email;
             parentModel.ParentPassword = password;
-            parentModel.ParentId = parentId;
+
+            var parentInfo = this.GetCurrentUserInfo();
 
             if (string.IsNullOrEmpty(parentModel.ParentUsername)
                 || string.IsNullOrEmpty(parentModel.ParentEmail)
-                || string.IsNullOrEmpty(parentModel.ParentPassword)
-                || string.IsNullOrEmpty(parentModel.ParentId.ToString()))
+                || string.IsNullOrEmpty(parentModel.ParentPassword))
             {
                 Alert("El registro contiene campos vacíos", NotificationType.warning);
                 return View(parentModel);
@@ -203,7 +208,7 @@ namespace ParentalControl.Web.Mvc.Controllers
             {
                 using (var db = new ParentalControlDBEntities())
                 {
-                    Parent parentUpdate = db.Parent.Find(parentId);
+                    Parent parentUpdate = db.Parent.Find(parentInfo.Id);
                     parentUpdate.ParentUsername = parentModel.ParentUsername;
                     parentUpdate.ParentEmail = parentModel.ParentEmail;
                     parentUpdate.ParentPassword = parentModel.ParentPassword;

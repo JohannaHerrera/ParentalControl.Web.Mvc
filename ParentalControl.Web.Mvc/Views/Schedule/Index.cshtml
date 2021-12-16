@@ -47,13 +47,13 @@
                             <h2 id="sectionTitle">Horarios</h2>
                             <hr />
                             <div id="sectionTable">
-                                <table id="table-Devices" class="table">
+                                <table id="table-Schedules" class="table">
                                     <tr>
                                         <td>
-                                            <h3 id="TitleBlue">Hora Inicio</h3>
+                                            <h3 id="TitleSchedule">Hora Inicio</h3>
                                         </td>
                                         <td>
-                                            <h3 id="TitleBlue">Hora Fin</h3>
+                                            <h3 id="TitleSchedule">Hora Fin</h3>
                                         </td>
                                     </tr>
                                     @foreach (var item in Model)
@@ -80,11 +80,12 @@
                                         </tr>
                                     }
                                 </table>
-
-                                <a href="@Url.Action("Create", "Schedule")" class="btn btn-primary rounded-pill">
-                                    <img src="~/Content/Images/reloj.png" class="img-fluid">
-                                    Agregar Horario
-                                </a>
+                                <div id="btnAddSchedule">
+                                    <a href="@Url.Action("Create", "Schedule")" class="btn btn-primary rounded-pill">
+                                        <img src="~/Content/Images/reloj.png" class="img-fluid">
+                                        Agregar Horario
+                                    </a>
+                                </div>                            
                             </div>
                         </div>
                     </div>

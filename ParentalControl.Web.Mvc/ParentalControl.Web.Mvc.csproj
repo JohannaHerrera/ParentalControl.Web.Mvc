@@ -293,6 +293,7 @@
     <Content Include="Content\Images\nina_64.png" />
     <Content Include="Content\Images\notificaciones.png" />
     <Content Include="Content\Images\reloj.png" />
+    <Content Include="Content\Images\user.png" />
     <Content Include="Content\Images\windows.png" />
     <Content Include="Content\ParentalControlStyle.css" />
     <Content Include="Content\plugins\sweetalert2.css" />
@@ -372,8 +373,8 @@
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Shared\_NotificationPanel.cshtml" />
     <Content Include="Views\InfantAccount\RulesInfantAccount.cshtml" />
-    <Content Include="Views\Account\EditProfile.cshtml" />
     <Content Include="Views\InfantAccount\DeleteInfantAccount.cshtml" />
+    <Content Include="Views\Account\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
