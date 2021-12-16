@@ -11,7 +11,7 @@ namespace ParentalControl.Web.Mvc.Models
         public int InfantAccountId { get; set; }
         [Required]
         [StringLength(100)]
-        [Display(Name ="Nombre")]
+        [Display(Name ="Nombre:")]
         public string InfantName { get; set; }
         [Required]
         [Display(Name = "Género")]
