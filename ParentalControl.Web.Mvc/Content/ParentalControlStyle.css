@@ -6,6 +6,7 @@
     justify-content: center;
     align-content: center;   
 }
+
 .btn-AddSchClock
 {
     border-radius: 50rem !important;
@@ -18,6 +19,7 @@
     background-color: #24cd7b;
     color: white;
 }
+
 #form {
     padding-left: 100px;
     padding-right: 80px;
@@ -210,8 +212,8 @@
     text-align: center !important;
     font-family: Arial !important;
     color: Highlight;
-    font-weight: bold;
-    font-size: 14px;
+    font-weight: bold !important;
+    font-size: 14px !important;
 }
 
 #row-News td {
@@ -220,6 +222,10 @@
     padding-bottom: 10px;
     padding-left: 15px;
     padding-right: 15px;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: 100;
+    text-align: justify; 
 }
 
 .containerDashboard {
@@ -251,8 +257,8 @@
 }
 
 #sectionTable {
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 50px;
+    margin-right: 50px;
     margin-top: 40px;
 }
 
@@ -632,7 +638,7 @@ input:checked + .slider:before {
     width: 40%;
     text-align: center;
     vertical-align: middle;
-    margin-left: 20px;
+    margin-left: 50px;
     margin-bottom: 5px;
 }
 
@@ -646,6 +652,26 @@ input:checked + .slider:before {
 #btnNewInfant{
     font-weight: bold;
     font-family: Arial;
+}
+
+#NewInfant-Section {
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+    #NewInfant-Section input {
+        margin-bottom: 30px;
+        margin-top: 20px;
+    }
+
+    #NewInfant-Section img{
+        margin-top: 20px;
+    }
+
+#titleLabelAddInfant {
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 

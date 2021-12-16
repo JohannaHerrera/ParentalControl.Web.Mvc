@@ -38,33 +38,43 @@
                         @Html.ActionLink("Mi Cuenta", "MyProfile", "Account", new { area = "" }, new { @class = "button-parent" })
                     </div>
                 </div>
-                @using (Html.BeginForm("AddInfantAccount", "InfantAccount", FormMethod.Post))
-                {
-                    <div class="row">
-                        <div class="col-12">
-                            <div>
-                                @Html.LabelFor(d => d.InfantName)
-                                @Html.TextBoxFor(d => d.InfantName, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(d => d.InfantName, null, new { @class = "text-danger" })
-                            </div>
-                            <div>
-                                @Html.Label("Seleccione el género:")<br />
-                                @Html.Label("Masculino:")
-                                @Html.RadioButtonFor(d => d.InfantGender, "Masculino")<br />
-                                @Html.Label("Femenino:")
-                                @Html.RadioButtonFor(d => d.InfantGender, "Femenino")<br />
-                                @Html.ValidationMessageFor(d => d.InfantGender, null, new { @class = "text-danger" })
-                            </div>
-                            
-                            <div class="mt-4" style="text-align:center">
-                                <input type="submit" value="Guardar" class="btn btn-primary" />
-                            </div>
+                <div class="info-Section">
+                    <div id="infantName-Rules">
+                        <a href='@Url.Action("Index", "InfantAccount")'><img src="~/Content/Images/flecha-izquierda.png"></a>
+                        <div id="sectionTitle">
+                            <h2 id="sectionTitle">Agregar Hijo</h2>
                         </div>
                     </div>
-                } 
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
+                    <hr />
+                    <div id="sectionTable">
+                        @using (Html.BeginForm("AddInfantAccount", "InfantAccount", FormMethod.Post))
+                        {
+                            <div class="row">
+                                <div class="col-12" id="NewInfant-Section">
+                                    <div>
+                                        @Html.LabelFor(d => d.InfantName, new { @id = "titleLabelAddInfant"})
+                                        @Html.TextBoxFor(d => d.InfantName, "", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(d => d.InfantName, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div>
+                                        @Html.Label("Seleccione el género:", new { @id = "titleLabelAddInfant" })<br />
+                                        <img class="img-responsive text-center" src="~/Content/Images/hijo 64.png">
+                                        @Html.Label("Masculino:")
+                                        @Html.RadioButtonFor(d => d.InfantGender, "Masculino")<br />
+                                        <img src="~/Content/Images/nina_64.png">
+                                        @Html.Label("Femenino:")
+                                        @Html.RadioButtonFor(d => d.InfantGender, "Femenino")<br />
+                                        @Html.ValidationMessageFor(d => d.InfantGender, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4" style="text-align:center">
+                                <input id="btnGuardar" type="submit" value="Guardar" class="btn btn-primary" />
+                            </div>
+                        }
+                    </div>
+                </div>                
             </div>
         </div>
     </div>
