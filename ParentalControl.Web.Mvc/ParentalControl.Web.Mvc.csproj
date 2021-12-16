@@ -250,6 +250,7 @@
     <Compile Include="Models\DeviceListModel.cs" />
     <Compile Include="Models\DevicePCModel.cs" />
     <Compile Include="Models\DevicePhoneModel.cs" />
+    <Compile Include="Models\DeviceUseModel.cs" />
     <Compile Include="Models\Enum.cs" />
     <Compile Include="Models\InfantAccountModel.cs" />
     <Compile Include="Models\InfantAccountRules.cs" />
@@ -372,6 +373,7 @@
     <Content Include="Views\Shared\_NotificationPanel.cshtml" />
     <Content Include="Views\InfantAccount\RulesInfantAccount.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
+    <Content Include="Views\InfantAccount\DeleteInfantAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

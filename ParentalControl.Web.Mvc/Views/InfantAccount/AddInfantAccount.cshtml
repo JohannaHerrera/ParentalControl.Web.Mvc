@@ -40,31 +40,46 @@
                 </div>
                 @using (Html.BeginForm("AddInfantAccount", "InfantAccount", FormMethod.Post))
                 {
-                    <div class="row">
+                    <div id="infantName-Rules">
+                        <a href='@Url.Action("Index", "InfantAccount")'><img src="~/Content/Images/flecha-izquierda.png"></a>
+                        <div id="sectionTitle">
+                            <h2 id="sectionTitle">Crear cuenta infantil</h2>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-4">
                         <div class="col-12">
-                            <div>
-                                @Html.LabelFor(d => d.InfantName)
-                                @Html.TextBoxFor(d => d.InfantName, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(d => d.InfantName, null, new { @class = "text-danger" })
+                            <div class="mt-4">
+                                <strong>@Html.LabelFor(infant => infant.InfantName)</strong>
+                                <div class="mt-2">
+                                    @Html.TextBoxFor(d => d.InfantName, "", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(d => d.InfantName, null, new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div>
-                                @Html.Label("Seleccione el género:")<br />
-                                @Html.Label("Masculino:")
-                                @Html.RadioButtonFor(d => d.InfantGender, "Masculino")<br />
-                                @Html.Label("Femenino:")
-                                @Html.RadioButtonFor(d => d.InfantGender, "Femenino")<br />
-                                @Html.ValidationMessageFor(d => d.InfantGender, null, new { @class = "text-danger" })
+                            <div class="mt-4">
+                                <strong>@Html.Label("Seleccione el género:")</strong>
+                                <br />
+                                <div class="mt-2">
+                                    @Html.RadioButtonFor(d => d.InfantGender, "Masculino")
+                                    <img class="img-fluid" src="~/Content/Images/hijo 64.png">
+                                    @Html.Label("Masculino:")
+                                </div>
+                                <br />
+                                <div class="mt-2">
+                                    @Html.RadioButtonFor(d => d.InfantGender, "Femenino")
+                                    <img class="img-fluid" src="~/Content/Images/nina_64.png">
+                                    @Html.Label("Femenino:")
+                                </div>
+                                <br />
+
+                                @Html.ValidationMessageFor(infant => infant.InfantGender, null, new { @class = "text-danger" })
                             </div>
-                            
                             <div class="mt-4" style="text-align:center">
                                 <input type="submit" value="Guardar" class="btn btn-primary" />
                             </div>
                         </div>
                     </div>
-                } 
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
+                }
             </div>
         </div>
     </div>

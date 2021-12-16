@@ -68,31 +68,61 @@ namespace ParentalControl.Web.Mvc.Controllers
         {
             try
             {
-                var creationDate = DateTime.Now;
                 var parent = this.GetCurrentUserInfo();
-                if (infantAccountModel != null)
+                if (ValidationInfantAccount(infantAccountModel.InfantName, parent.Id))
                 {
-                    if (ModelState.IsValid)
-                    {
-                        using (var db = new ParentalControlDBEntities())
-                        {
-                            InfantAccount infantAccount = new InfantAccount();
-                            infantAccount.InfantName = infantAccountModel.InfantName;
-                            infantAccount.InfantGender = infantAccountModel.InfantGender;
-                            infantAccount.InfantCreationDate = creationDate;
-                            infantAccount.ParentId = parent.Id;
-                            db.InfantAccount.Add(infantAccount);
-                            db.SaveChanges();
-                        }
-                        Alert("Se ha creado el Infante con éxito", NotificationType.success);
-                        return Redirect("Index");
-                    }
-                    else
-                    {
-                        return View(infantAccountModel);
-                    }
+                    Alert("Ya existe una cuenta de infante con ese mismo nombre", NotificationType.error);
+                    return Redirect("Index");
                 }
-                return View();
+                else
+                {
+                    var creationDate = DateTime.Now;
+                    if (infantAccountModel != null)
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            using (var db = new ParentalControlDBEntities())
+                            {                                
+                                InfantAccount infantAccount = new InfantAccount();                                
+                                infantAccount.InfantName = infantAccountModel.InfantName;
+                                infantAccount.InfantGender = infantAccountModel.InfantGender;
+                                infantAccount.InfantCreationDate = creationDate;
+                                infantAccount.ParentId = parent.Id;
+                                db.InfantAccount.Add(infantAccount);
+                                db.SaveChanges();
+                                List<WebCategory> webCategorieList= db.WebCategory.ToList();
+                                foreach (var category in webCategorieList)
+                                {
+                                    WebConfiguration webConfiguration = new WebConfiguration();
+                                    webConfiguration.WebConfigurationAccess = false;
+                                    webConfiguration.CategoryId = category.CategoryId;
+                                    webConfiguration.InfantAccountId = infantAccount.InfantAccountId;
+                                    db.WebConfiguration.Add(webConfiguration);
+                                    db.SaveChanges();
+                                }
+                                string[] dias = new string[7] {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+                                foreach(var dia in dias)
+                                {
+                                    DeviceUse deviceUse = new DeviceUse();
+                                    deviceUse.DeviceUseDay = dia;
+                                    deviceUse.DeviceUseCreationDate = creationDate;
+                                    deviceUse.InfantAccountId = infantAccount.InfantAccountId;
+                                    deviceUse.ScheduleId = null;
+                                    db.DeviceUse.Add(deviceUse);
+                                    db.SaveChanges();
+                                }
+
+                            }
+                            Alert("Se ha creado el Infante con éxito", NotificationType.success);
+                            return Redirect("Index");
+                        }
+                        else
+                        {
+                            return View(infantAccountModel);
+                        }
+                    }
+                    return View();
+                }                
             }
             catch(Exception ex)
             {
@@ -178,85 +208,92 @@ namespace ParentalControl.Web.Mvc.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="infantAccountId"></param>
-        /// <returns></returns>
+
         [AuthorizeParent]
-        [HttpGet]
-        public ActionResult DeleteInfantAccount(int? infantAccountId)
+        public ActionResult DeleteInfantAccount(int infantAccountId)
         {
             try
             {
-                Activity activity = new Activity();
-                App app = new App();
-                DevicePhone devicePhone = new DevicePhone();
-                DeviceUse deviceUse = new DeviceUse();
-                Request request = new Request();
-                WebConfiguration webConfiguration = new WebConfiguration();
-                WindowsAccount windowsAccount = new WindowsAccount();
-                InfantAccount infantAccount = new InfantAccount();
+                InfantAccountModel infantAccountModel = new InfantAccountModel();
+                var parent = this.GetCurrentUserInfo();
 
                 using (var db = new ParentalControlDBEntities())
                 {
-                    activity = db.Activity.Find(infantAccountId);
-                    if (activity != null)
-                    {
-                        db.Activity.Remove(activity);
-                        db.SaveChanges();
-                    }
-                    app = db.App.Find(infantAccountId);
-                    if (app != null)
-                    {
-                        db.App.Remove(app);
-                        db.SaveChanges();
-                    }
-                    devicePhone = db.DevicePhone.Find(infantAccountId);
-                    if (devicePhone != null)
-                    {
-                        devicePhone.InfantAccountId = null;
-                        db.Entry(devicePhone).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                    deviceUse = db.DeviceUse.Find(infantAccountId);
-                    if (deviceUse != null)
-                    {
-                        db.DeviceUse.Remove(deviceUse);
-                        db.SaveChanges();
-                    }
-                    request = db.Request.Find(infantAccountId);
-                    if (request != null)
-                    {
-                        db.Request.Remove(request);
-                        db.SaveChanges();
-                    }
-                    webConfiguration = db.WebConfiguration.Find(infantAccountId);
-                    if (webConfiguration != null)
-                    {
-                        db.WebConfiguration.Remove(webConfiguration);
-                        db.SaveChanges();
-                    }
-                    windowsAccount = db.WindowsAccount.Find(infantAccountId);
-                    if (windowsAccount != null)
-                    {
-                        windowsAccount.InfantAccountId = null;
-                        db.Entry(windowsAccount).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                    
-                    infantAccount = db.InfantAccount.Find(infantAccountId);
-                    db.InfantAccount.Remove(infantAccount);
-                    db.SaveChanges();
+                    infantAccountModel = (from infantAccount in db.InfantAccount
+                                     where infantAccount.InfantAccountId == infantAccountId
+                                     && infantAccount.ParentId == parent.Id
+                                     select new InfantAccountModel
+                                     {
+                                         InfantAccountId = infantAccount.InfantAccountId,
+                                         InfantName = infantAccount.InfantName,
+                                         InfantGender = infantAccount.InfantGender,
+                                         ParentId = infantAccount.ParentId
+                                     }).FirstOrDefault();
                 }
-                Alert("Se eliminó la cuenta de infante satisfactoriamente", NotificationType.success);
-                return Redirect("Index");
+
+                return View(infantAccountModel);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return View();
             }
-            
+        }
+
+        [AuthorizeParent]
+        [HttpPost]
+        public ActionResult DeleteInfantAccount(InfantAccountModel infantAccountModel)
+        {
+            try
+            {
+                var parent = this.GetCurrentUserInfo();
+
+                using (var db = new ParentalControlDBEntities())
+                {
+                    var infant = (from infantAccount in db.InfantAccount
+                                    where infantAccount.InfantAccountId == infantAccountModel.InfantAccountId
+                                    && infantAccount.ParentId == infantAccountModel.ParentId
+                                    select infantAccount).FirstOrDefault();
+
+                    if (infant != null)
+                    {
+                        var activity = db.Activity.Where(x => x.InfantAccountId == infant.InfantAccountId);
+                        var apps = db.App.Where(x => x.InfantAccountId == infant.InfantAccountId);
+                        var devicePhone = db.DevicePhone.Where(x => x.InfantAccountId == infant.InfantAccountId).ToList(); 
+                        foreach(var i in devicePhone)
+                        {
+                            i.InfantAccountId = null;
+                            db.Entry(i).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        var deviceUse = db.DeviceUse.Where(x => x.InfantAccountId == infant.InfantAccountId);
+                        var request = db.Request.Where(x => x.InfantAccountId == infant.InfantAccountId);
+                        var webConfiguration = db.WebConfiguration.Where(x => x.InfantAccountId == infant.InfantAccountId);
+                        var windowsAccount = db.WindowsAccount.Where(x => x.InfantAccountId == infant.InfantAccountId).ToList();
+                        foreach (var i in windowsAccount)
+                        {
+                            i.InfantAccountId = null;
+                            db.Entry(i).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                        //Valida que se borre la llave foranea
+                        db.Activity.RemoveRange(activity);
+                        db.App.RemoveRange(apps);
+                        db.DeviceUse.RemoveRange(deviceUse);
+                        db.Request.RemoveRange(request);
+                        db.WebConfiguration.RemoveRange(webConfiguration);
+                        db.InfantAccount.Remove(infant);
+                        db.SaveChanges();
+                    }
+                }
+                Alert("El registro se eliminó correctamente", NotificationType.success);
+                return RedirectToAction("Index", "InfantAccount");
+            }
+            catch (Exception ex)
+            {
+                Alert("Ha ocurrido un error", NotificationType.error);
+                return View();
+            }
         }
 
         [AuthorizeParent]
@@ -494,6 +531,32 @@ namespace ParentalControl.Web.Mvc.Controllers
             {
                 Alert("Ocurrió un error al actualizar la configuración. Inténtelo de nuevo", NotificationType.error);
                 return RedirectToAction("RulesInfantAccount", "InfantAccount", new { infantAccountId = infantAccountId });
+            }
+        }
+
+        public bool ValidationInfantAccount(string infantName, int parentId)
+        {
+            List<InfantAccountModel> infantAccountList = new List<InfantAccountModel>();
+            using (var db = new ParentalControlDBEntities())
+            {
+                infantAccountList = (from infantaccount in db.InfantAccount
+                                     where infantaccount.InfantName == infantName
+                                     where infantaccount.ParentId == parentId
+                                    select new InfantAccountModel
+                                    {
+                                        InfantAccountId = infantaccount.InfantAccountId,
+                                        InfantName = infantaccount.InfantName,
+                                        InfantGender = infantaccount.InfantGender,
+                                        ParentId = infantaccount.ParentId
+                                    }).ToList();
+            }
+            if (infantAccountList.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

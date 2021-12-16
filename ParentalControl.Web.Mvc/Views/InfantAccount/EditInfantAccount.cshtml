@@ -42,26 +42,38 @@
                 {
                     @Html.HiddenFor(infant => infant.InfantAccountId)
                     @Html.HiddenFor(infant => infant.ParentId)
-                    <div id="deviceName">
+                    <div id="infantName-Rules">
                         <a href='@Url.Action("Index", "InfantAccount")'><img src="~/Content/Images/flecha-izquierda.png"></a>
                         <div id="sectionTitle">
-                            @Html.TextBoxFor(infant => infant.InfantName, (object)new { @disabled = true, @id = "infantAccountName" })
+                            <h2 id="sectionTitle">@Model.InfantName</h2>
                         </div>
-                        <hr />
                     </div>
-                    <div class="row">
+                    <hr />
+                    <div class="row mt-4">
                         <div class="col-12">
-                            <div>
-                                @Html.LabelFor(infant => infant.InfantName)
-                                @Html.TextBoxFor(infant => infant.InfantName, "", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(infant => infant.InfantName, null, new { @class = "text-danger" })
+                            <div class="mt-4">
+                                <strong>@Html.LabelFor(infant => infant.InfantName)</strong>
+                                <div class="mt-2">
+                                    @Html.TextBoxFor(infant => infant.InfantName, "", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(infant => infant.InfantName, null, new { @class = "text-danger" })
+                                </div>                                
                             </div>
-                            <div>
-                                @Html.Label("Seleccione el género:")<br />
-                                @Html.Label("Masculino:")
-                                @Html.RadioButtonFor(infant => infant.InfantGender, "Masculino")<br />
-                                @Html.Label("Femenino:")
-                                @Html.RadioButtonFor(infant => infant.InfantGender, "Femenino")<br />
+                            <div class="mt-4">
+                                <strong>@Html.Label("Seleccione el género:")</strong>
+                                <br />
+                                <div class="mt-2">
+                                    @Html.RadioButtonFor(infant => infant.InfantGender, "Masculino")
+                                    <img class="img-fluid" src="~/Content/Images/hijo 64.png">
+                                    @Html.Label("Masculino:")
+                                </div>
+                                <br />
+                                <div class="mt-2">
+                                    @Html.RadioButtonFor(infant => infant.InfantGender, "Femenino")
+                                    <img class="img-fluid" src="~/Content/Images/nina_64.png">
+                                    @Html.Label("Femenino:")
+                                </div>
+                                <br />
+
                                 @Html.ValidationMessageFor(infant => infant.InfantGender, null, new { @class = "text-danger" })
                             </div>
 
@@ -71,9 +83,6 @@
                         </div>
                     </div>
                 }
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
             </div>
         </div>
     </div>
