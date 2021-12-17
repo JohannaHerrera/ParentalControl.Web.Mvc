@@ -9,11 +9,11 @@ namespace ParentalControl.Web.Mvc.Models
     public class InfantAccountModel
     {
         public int InfantAccountId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Por favor, ingrese el nombre del infante.")]
         [StringLength(100)]
         [Display(Name ="Nombre:")]
         public string InfantName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Por favor, seleccione el género del infante.")]
         [Display(Name = "Género")]
         public string InfantGender { get; set; }
         public DateTime InfantCreationDate { get; set; }
