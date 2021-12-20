@@ -374,8 +374,12 @@
         margin-bottom: auto;
         font-weight: bold;
         font-family: Arial;
-        text-align: center;
+        width: 140%;
     }
+
+#devicePhoneInfants {
+    text-align: left
+}
 
 #table-DeviceUse {
     padding-top: 0px;
