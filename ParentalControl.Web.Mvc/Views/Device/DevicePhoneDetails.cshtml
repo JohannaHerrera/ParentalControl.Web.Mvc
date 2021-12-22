@@ -99,7 +99,7 @@
                                                 <select id="scheduleList" name="scheduleList">
                                                     @foreach (SelectListItem option in ViewData["scheduleList"] as SelectList)
                                                     {
-                                                        <option value="@option.Value" @(option.Value == Model.InfantAccountId.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                                        <option value="@option.Value" @(option.Value == item.ScheduleId.ToString() ? "selected='selected'" : "")>@option.Text</option>
                                                     }
                                                 </select>
                                             }
