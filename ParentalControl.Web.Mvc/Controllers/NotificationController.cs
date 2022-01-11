@@ -38,11 +38,28 @@ namespace ParentalControl.Web.Mvc.Controllers
                                            RequestState = request.RequestState,
                                            RequestTime = request.RequestTime,
                                            InfantGender = infant.InfantGender,
-                                           InfantName = infant.InfantName
+                                           InfantName = infant.InfantName,
+                                           DevicePCId = request.DevicePCId,
+                                           DevicePhoneId = request.DevicePhoneId
                                        }).ToList();
                     
                     foreach(var request in requestList)
                     {
+                        string nameDevice = string.Empty;
+
+                        if (request.DevicePhoneId != null)
+                        {
+                            nameDevice = (from device in db.DevicePhone
+                                          where device.DevicePhoneId == request.DevicePhoneId
+                                          select device).FirstOrDefault().DevicePhoneName;
+                        }
+                        else if (request.DevicePCId != null)
+                        {
+                            nameDevice = (from device in db.DevicePC
+                                          where device.DevicePCId == request.DevicePCId
+                                          select device).FirstOrDefault().DevicePCName;
+                        }
+
                         if (request.RequestTypeId == constants.WebConfiguration)
                         {
                             request.MessageNotification = $"Petición para habilitar el acceso a la categoría" +
@@ -51,7 +68,7 @@ namespace ParentalControl.Web.Mvc.Controllers
                         else if (request.RequestTypeId == constants.AppConfiguration)
                         {
                             request.MessageNotification = $"Petición para habilitar el acceso a la aplicación:" +
-                                                          $" {request.RequestObject}.";
+                                                          $" {request.RequestObject} del dispositivo {nameDevice}.";
                         }
                         else if (request.RequestTypeId == constants.DeviceConfiguration)
                         {
@@ -76,13 +93,14 @@ namespace ParentalControl.Web.Mvc.Controllers
                                     if (numDecimal > 0)
                                     {
                                         request.MessageNotification = $"Petición para extender el tiempo de uso del " +
-                                                                      $"dispositivo por {numEntero} hora y {numDecimal}" +
+                                                                      $"dispositivo {nameDevice} por {numEntero} hora " +
+                                                                      $"y {numDecimal}" +
                                                                       $" minutos.";
                                     }
                                     else
                                     {
                                         request.MessageNotification = $"Petición para extender el tiempo de uso del " +
-                                                                      $"dispositivo por {numEntero} hora.";
+                                                                      $"dispositivo {nameDevice} por {numEntero} hora.";
                                     }
                                 }
                                 else
@@ -90,20 +108,21 @@ namespace ParentalControl.Web.Mvc.Controllers
                                     if (numDecimal > 0)
                                     {
                                         request.MessageNotification = $"Petición para extender el tiempo de uso del " +
-                                                                      $"dispositivo por {numEntero} horas y {numDecimal}" +
+                                                                      $"dispositivo {nameDevice} por {numEntero} horas " +
+                                                                      $"y {numDecimal}" +
                                                                       $" minutos.";
                                     }
                                     else
                                     {
                                         request.MessageNotification = $"Petición para extender el tiempo de uso del " +
-                                                                      $"dispositivo por {numEntero} horas.";
+                                                                      $"dispositivo {nameDevice} por {numEntero} horas.";
                                     }
                                 }
                             }
                             else
                             {
                                 request.MessageNotification = $"Petición para extender el tiempo de uso del " +
-                                                              $"dispositivo por {numDecimal} minutos.";
+                                                              $"dispositivo {nameDevice} por {numDecimal} minutos.";
                             }
                         }
                     }

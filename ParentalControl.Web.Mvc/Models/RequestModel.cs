@@ -18,5 +18,7 @@ namespace ParentalControl.Web.Mvc.Models
         public string InfantGender { get; set; }
         public string InfantName { get; set; }
         public string MessageNotification { get; set; }
+        public int? DevicePhoneId { get; set; }
+        public int? DevicePCId { get; set; }
     }
 }

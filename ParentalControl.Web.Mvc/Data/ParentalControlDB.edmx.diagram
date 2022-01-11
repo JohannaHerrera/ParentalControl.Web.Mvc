@@ -44,6 +44,8 @@
         <AssociationConnector Association="ParentalControlDBModel.Request_Parent_fk03" ManuallyRouted="false" />
         <AssociationConnector Association="ParentalControlDBModel.Request_RequestType_fk01" ManuallyRouted="false" />
         <AssociationConnector Association="ParentalControlDBModel.WebCategory_WebConfigurationFk" ManuallyRouted="false" />
+        <AssociationConnector Association="ParentalControlDBModel.Request_DevicePC_fk04" />
+        <AssociationConnector Association="ParentalControlDBModel.Request_DevicePhone_fk05" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
