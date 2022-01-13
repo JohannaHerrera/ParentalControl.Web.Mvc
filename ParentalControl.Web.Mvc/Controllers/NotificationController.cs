@@ -40,7 +40,8 @@ namespace ParentalControl.Web.Mvc.Controllers
                                            InfantGender = infant.InfantGender,
                                            InfantName = infant.InfantName,
                                            DevicePCId = request.DevicePCId,
-                                           DevicePhoneId = request.DevicePhoneId
+                                           DevicePhoneId = request.DevicePhoneId,
+                                           RequestCreationDate = request.RequestCreationDate
                                        }).ToList();
                     
                     foreach(var request in requestList)
@@ -124,6 +125,19 @@ namespace ParentalControl.Web.Mvc.Controllers
                                 request.MessageNotification = $"Petición para extender el tiempo de uso del " +
                                                               $"dispositivo {nameDevice} por {numDecimal} minutos.";
                             }
+
+                            if(DateTime.Now.Date > request.RequestCreationDate.Date)
+                            {
+                                var req = (from requestInfo in db.Request
+                                           where requestInfo.RequestId == request.RequestId
+                                           select requestInfo).FirstOrDefault();
+
+                                if(req != null)
+                                {
+                                    req.RequestState = 3;
+                                    db.SaveChanges();
+                                }
+                            }
                         }
                     }
 
@@ -155,6 +169,42 @@ namespace ParentalControl.Web.Mvc.Controllers
 
                     if (requestModel != null)
                     {
+                        if(requestModel.RequestTypeId == 1)
+                        {
+                            var web = (from webConfig in db.WebConfiguration
+                                       where webConfig.CategoryId == requestModel.RequestTypeId
+                                       && webConfig.InfantAccountId == requestModel.InfantAccountId
+                                       select webConfig).FirstOrDefault();
+
+                            if(web != null)
+                            {
+                                web.WebConfigurationAccess = appConstants.Access;
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                return View();
+                            }
+                        }
+                        else if(requestModel.RequestTypeId == 2)
+                        {
+                            var app = (from appConfig in db.App
+                                       where appConfig.AppName.ToUpper().Equals(requestModel.RequestObject.ToUpper())
+                                       && appConfig.InfantAccountId == requestModel.InfantAccountId
+                                       select appConfig).FirstOrDefault();
+
+                            if (app != null)
+                            {
+                                app.AppAccessPermission = appConstants.Access;
+                                app.ScheduleId = null;
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                return View();
+                            }
+                        }
+
                         requestModel.RequestState = appConstants.RequestStateApproved;
                         db.SaveChanges();
                     }

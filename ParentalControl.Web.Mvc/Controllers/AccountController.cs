@@ -206,17 +206,25 @@ namespace ParentalControl.Web.Mvc.Controllers
             }
             else
             {
-                using (var db = new ParentalControlDBEntities())
+                if(!parentModel.ParentEmail.Contains("@") || !parentModel.ParentEmail.Contains("."))
                 {
-                    Parent parentUpdate = db.Parent.Find(parentInfo.Id);
-                    parentUpdate.ParentUsername = parentModel.ParentUsername;
-                    parentUpdate.ParentEmail = parentModel.ParentEmail;
-                    parentUpdate.ParentPassword = parentModel.ParentPassword;
-                    db.Entry(parentUpdate).State = EntityState.Modified;
-                    db.SaveChanges();
+                    Alert("Ingrese una dirección de correo válida", NotificationType.warning);
+                    return View(parentModel);
                 }
-                Alert("El registro se actualizó correctamente", NotificationType.success);
-                return Redirect("MyProfile");
+                else
+                {
+                    using (var db = new ParentalControlDBEntities())
+                    {
+                        Parent parentUpdate = db.Parent.Find(parentInfo.Id);
+                        parentUpdate.ParentUsername = parentModel.ParentUsername;
+                        parentUpdate.ParentEmail = parentModel.ParentEmail;
+                        parentUpdate.ParentPassword = parentModel.ParentPassword;
+                        db.Entry(parentUpdate).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    Alert("El registro se actualizó correctamente", NotificationType.success);
+                    return Redirect("MyProfile");
+                }
             }
         }
     }
