@@ -172,7 +172,10 @@ namespace ParentalControl.Web.Mvc.Controllers
                         if(requestModel.RequestTypeId == 1)
                         {
                             var web = (from webConfig in db.WebConfiguration
-                                       where webConfig.CategoryId == requestModel.RequestTypeId
+                                       join category in db.WebCategory
+                                       on webConfig.CategoryId
+                                       equals category.CategoryId
+                                       where category.CategoryName.ToUpper().Equals(requestModel.RequestObject.ToUpper())
                                        && webConfig.InfantAccountId == requestModel.InfantAccountId
                                        select webConfig).FirstOrDefault();
 
