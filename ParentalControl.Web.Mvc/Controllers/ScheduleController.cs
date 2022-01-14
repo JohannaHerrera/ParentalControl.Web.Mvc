@@ -280,10 +280,40 @@ namespace ParentalControl.Web.Mvc.Controllers
                 return View();      
             }
         }
+
         [AuthorizeParent]
         [HttpGet]
         public ActionResult DeleteSchedule(int? scheduleId)
         {
+            //try
+            //{
+            //    Schedule schedule = new Schedule();
+            //    using (var db = new ParentalControlDBEntities())
+            //    {
+            //        schedule = db.Schedule.Find(scheduleId);
+            //        if (schedule != null)
+            //        {
+            //            var apps = db.App.Where(x => x.ScheduleId == schedule.ScheduleId);
+            //            var deviceUse = db.DeviceUse.Where(x => x.ScheduleId == schedule.ScheduleId);
+            //            var devicePhoneUse = db.DevicePhoneUse.Where(x => x.ScheduleId == schedule.ScheduleId);
+            //            //Valida que se borre la llave foranea
+            //            db.App.RemoveRange(apps);
+            //            db.DevicePhoneUse.RemoveRange(devicePhoneUse);
+            //            db.DeviceUse.RemoveRange(deviceUse);
+            //            db.Schedule.Remove(schedule);
+            //            db.SaveChanges();
+            //        }
+
+            //    }
+            //    Alert("El registro se eliminó correctamente", NotificationType.success);
+
+            //    return Redirect("Index");
+            //}
+            //catch (Exception e)
+            //{
+            //    Alert("Ha ocurrido un error", NotificationType.error);
+            //    return Redirect("Index");
+            //}
             try
             {
                 Schedule schedule = new Schedule();
@@ -292,20 +322,36 @@ namespace ParentalControl.Web.Mvc.Controllers
                     schedule = db.Schedule.Find(scheduleId);
                     if (schedule != null)
                     {
-                        var apps = db.App.Where(x => x.ScheduleId == schedule.ScheduleId);
-                        var deviceUse = db.DeviceUse.Where(x => x.ScheduleId == schedule.ScheduleId);
-                        var devicePhoneUse = db.DevicePhoneUse.Where(x => x.ScheduleId == schedule.ScheduleId);
-                        //Valida que se borre la llave foranea
-                        db.App.RemoveRange(apps);
-                        db.DevicePhoneUse.RemoveRange(devicePhoneUse);
-                        db.DeviceUse.RemoveRange(deviceUse);
+                        //***************** Valida que se borre la llave foranea
+                        var apps = db.App.Where(x => x.ScheduleId == schedule.ScheduleId).ToList();
+                        foreach (var i in apps)
+                        {
+                            i.ScheduleId = null;
+                            db.Entry(i).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                        var deviceUse = db.DeviceUse.Where(x => x.ScheduleId == schedule.ScheduleId).ToList();
+                        foreach (var i in deviceUse)
+                        {
+                            i.ScheduleId = null;
+                            db.Entry(i).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        var devicePhoneUse = db.DevicePhoneUse.Where(x => x.ScheduleId == schedule.ScheduleId).ToList();
+                        foreach (var i in devicePhoneUse)
+                        {
+                            i.ScheduleId = null;
+                            db.Entry(i).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
                         db.Schedule.Remove(schedule);
                         db.SaveChanges();
                     }
 
                 }
                 Alert("El registro se eliminó correctamente", NotificationType.success);
-                
                 return Redirect("Index");
             }
             catch (Exception e)
