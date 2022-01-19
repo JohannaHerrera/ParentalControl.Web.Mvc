@@ -412,15 +412,17 @@ namespace ParentalControl.Web.Mvc.Controllers
                                     && device.ParentId == devicePCModel.ParentId
                                     select device).FirstOrDefault();
 
-                    if(devicePC != null)
+                    if (devicePC != null)
                     {
                         var windowsAccounts = db.WindowsAccount.Where(x => x.DevicePCId == devicePC.DevicePCId);
                         var apps = db.App.Where(x => x.DevicePCId == devicePC.DevicePCId);
                         var appsDevice = db.AppDevice.Where(x => x.DevicePCId == devicePC.DevicePCId);
+                        var requests = db.Request.Where(x => x.DevicePCId == devicePC.DevicePCId);
 
                         db.WindowsAccount.RemoveRange(windowsAccounts);
                         db.App.RemoveRange(apps);
                         db.AppDevice.RemoveRange(appsDevice);
+                        db.Request.RemoveRange(requests);
                         db.DevicePC.Remove(devicePC);
                         db.SaveChanges();
                     }
@@ -705,10 +707,12 @@ namespace ParentalControl.Web.Mvc.Controllers
                         var deviceUseSchedules = db.DevicePhoneUse.Where(x => x.DevicePhoneId == devicePhone.DevicePhoneId);
                         var apps = db.App.Where(x => x.DevicePhoneId == devicePhone.DevicePhoneId);
                         var appsDevice = db.AppDevice.Where(x => x.DevicePhoneId == devicePhone.DevicePhoneId);
+                        var request = db.Request.Where(x => x.DevicePhoneId == devicePhone.DevicePhoneId);
 
                         db.DevicePhoneUse.RemoveRange(deviceUseSchedules);
                         db.App.RemoveRange(apps);
                         db.AppDevice.RemoveRange(appsDevice);
+                        db.Request.RemoveRange(request);
                         db.DevicePhone.Remove(devicePhone);
                         db.SaveChanges();
                     }
